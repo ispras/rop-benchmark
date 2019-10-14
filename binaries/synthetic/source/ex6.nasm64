@@ -1,0 +1,43 @@
+;set reg with small store
+
+bits 64
+
+SECTION .data
+
+  buffer: resb 20000
+
+SECTION .text
+
+gadgets:
+
+.LoadConstG1
+POP BX
+RET
+
+.StoreMemG:
+MOV WORD [RAX], BX
+RET
+
+.LoadConstGa1
+POP RDI
+RET
+
+.LoadConstGa2
+POP RSI
+RET
+
+.LoadConstGa3
+POP RDX
+RET
+
+.LoadConstGn
+POP RAX
+RET
+
+; rax (rdi, rsi, rdx)
+.SyscallG:
+SYSCALL
+
+.NoOP:
+RET
+RET

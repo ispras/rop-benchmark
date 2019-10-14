@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "SUCCESS"
+echo "PARAMETERS ARE CORRECT"
+
+exit 0

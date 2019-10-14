@@ -1,0 +1,13 @@
+bits 64
+
+SECTION .data
+
+  buffer: resb 20000
+
+SECTION .text
+
+gadgets:
+
+.NoOP:
+RET
+RET

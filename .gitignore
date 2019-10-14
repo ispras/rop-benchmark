@@ -1,0 +1,8 @@
+.idea
+*.output
+*.ropchain
+*.script
+*.input
+__pycache__/
+*.merg_o
+*.log
