@@ -92,7 +92,7 @@ class BaseJob:
         from logging import DEBUG, INFO
         logger = getLogger("rop-benchmark:{}:{}".format(self.rop_tool, self.binary))
         logger.setLevel(DEBUG)
-        fh = FileHandler('{}.{}.output'.format(self.binary, self.rop_tool))
+        fh = FileHandler('{}.{}.output'.format(self.binary, self.rop_tool), mode='w')
         fh.setLevel(DEBUG)
         ch = StreamHandler()
         ch.setLevel(INFO)
