@@ -1,0 +1,39 @@
+;set mem with arith const
+
+bits 64
+
+SECTION .data
+
+  buffer: resb 20000
+
+SECTION .text
+
+gadgets:
+
+.LoadConstG1
+POP RDI
+POP RSI
+POP RDX
+POP RAX
+RET
+
+.LoadConstG2
+POP RDI
+POP RBP
+RET
+
+.InitMemG:
+MOV BYTE [RDI], 0h
+RET
+
+.ArithMemG:
+ADD BYTE [RBP], DH
+RET
+
+; rax (rdi, rsi, rdx)
+.SyscallG:
+SYSCALL
+
+.NoOP:
+RET
+RET

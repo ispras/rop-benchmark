@@ -1,0 +1,35 @@
+;set mem with big offset
+
+bits 64
+
+SECTION .data
+
+  buffer: resb 20000
+
+SECTION .text
+
+gadgets:
+
+.LoadConstG1
+POP RDI
+POP RSI
+POP RDX
+POP RAX
+RET
+
+.LoadConstG2
+POP RSI
+POP RBX
+RET
+
+.StoreMemG:
+MOV DWORD [RBX + 0FFFFFFFFFFFF000h], RSI
+RET
+
+; rax (rdi, rsi, rdx)
+.SyscallG:
+SYSCALL
+
+.NoOP:
+RET
+RET
