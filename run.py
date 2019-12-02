@@ -3,6 +3,7 @@ from os.path import join, splitext, basename, isdir
 from os import listdir
 from argparse import ArgumentParser
 from sys import exit
+from multiprocessing import Pool, cpu_count
 
 
 def list_all_reallife_test_suites():
@@ -21,7 +22,7 @@ def list_tests(directory):
     return sorted(tests)
 
 
-def run_test(testname, tool, exploit_type):
+def run_test(args):
     """Try to generate ROP chain for `testname` by `tool` for `exploit_type`
     payload.
 
@@ -31,15 +32,16 @@ def run_test(testname, tool, exploit_type):
     """
     from subprocess import Popen, PIPE, STDOUT
     from os import environ, getcwd
+
+    testname, tool, exploit_type = args
     pp = environ["PYTHONPATH"]
     environ["PYTHONPATH"] = getcwd()
     cmd = ["/usr/bin/python3", "{}/job_{}.py".format(tool, exploit_type), testname]
     process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
     stdout, stderr = process.communicate()
-    if stdout:
-        print(stdout.decode()[:-1])
     environ["PYTHONPATH"] = pp
-    return 1 if not process.returncode else 0
+
+    return (1, stdout) if not process.returncode else (0, stdout)
 
 
 parser = ArgumentParser(description=("Rop-benchmark entry point. "
@@ -49,6 +51,8 @@ parser.add_argument("-s", "--synthetic", action='store_true',
 parser.add_argument("-t", "--tool", type=str, help="Run only tool")
 parser.add_argument("-r", "--real-life", type=str,
                     help="Run only specified real life binary test-suite.")
+parser.add_argument("-n", "--cores", type=int,
+                    help="The number of parallel instances to run.")
 args = parser.parse_args()
 
 
@@ -80,6 +84,9 @@ for exp_type in exploit_types:
     for tool in tools:
         results[exp_type][tool] = {}
 
+n_core = args.cores if args.cores is not None else cpu_count()
+print("---- Run rop-benchmark in {} parallel jobs ----".format(n_core))
+proc_pool = Pool(n_core)
 for tool in tools:
     for exploit_type in exploit_types:
         for test_suite_name, test_suite_dir in test_suites.items():
@@ -88,9 +95,13 @@ for tool in tools:
             tests = list_tests(test_suite_dir)
             passed = 0
             current_id = 1
-            for test in tests:
-                print(f"{current_id: >{4}}:", end="")
-                passed += run_test(test, tool, exploit_type)
+            args = [(test, tool, exploit_type) for test in tests]
+            for r in proc_pool.imap(run_test, args):
+                is_passed, bstdout = r
+                if bstdout:
+                    stdout = bstdout.decode()
+                    print(f"{current_id: >{4}}:{stdout}", end="")
+                passed += is_passed
                 current_id += 1
             results[exploit_type][tool][test_suite_name] = (passed, len(tests))
             print("--- Result --- {} {} {} : {} / {} (passed/all)"
