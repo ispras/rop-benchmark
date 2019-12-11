@@ -25,7 +25,7 @@ success status of ROP chain execution.
 Dockerfile is placed inside `docker` folder. To build docker image:
 
     $ cd docker
-    $ docker build -t rop-benchmark .
+    $ sudo docker build -t rop-benchmark .
 
 # Usage
 
