@@ -8,7 +8,7 @@ from multiprocessing import Pool, cpu_count
 
 def list_all_reallife_test_suites():
     """Return all directories placed under binaries/reallife/vuln"""
-    d = join("binaries", "reallife", "vuln")
+    d = REALLIFE_VULN_DIR
     return [f for f in listdir(d) if isdir(join(d, f))]
 
 
@@ -53,8 +53,12 @@ parser.add_argument("-r", "--real-life", type=str,
                     help="Run only specified real life binary test-suite.")
 parser.add_argument("-n", "--cores", type=int,
                     help="The number of parallel instances to run.")
+parser.add_argument("-a", "--arch", type=str, default="x86",
+                    help="The target architecture of framework.")
 args = parser.parse_args()
 
+SYNTHETIC_VULN_DIR = join("binaries", args.arch, "synthetic", "vuln")
+REALLIFE_VULN_DIR = join("binaries", args.arch, "reallife", "vuln")
 
 exploit_types = ["execve"]
 reallife_test_suites = list_all_reallife_test_suites()
@@ -65,18 +69,17 @@ else:
     tools = [args.tool]
 
 test_suites = {}
-test_suites["synthetic"] = join("binaries", "synthetic", "vuln")
+test_suites["synthetic"] = SYNTHETIC_VULN_DIR
 if not args.synthetic:
     if args.real_life:
         if args.real_life not in reallife_test_suites:
             print("Incorrect real life test set. Choose one of:")
             print(" ".join(reallife_test_suites))
             exit(1)
-        test_suites[args.real_life] = join("binaries", "reallife", "vuln",
-                                           args.real_life)
+        test_suites[args.real_life] = join(REALLIFE_VULN_DIR, args.real_life)
     else:
         for t in reallife_test_suites:
-            test_suites[t] = join("binaries", "reallife", "vuln", t)
+            test_suites[t] = join(REALLIFE_VULN_DIR, t)
 
 results = {}
 for exp_type in exploit_types:
