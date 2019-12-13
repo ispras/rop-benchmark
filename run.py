@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from os.path import join, splitext, basename, isdir
-from os import listdir
+from os import listdir, environ, getcwd
 from argparse import ArgumentParser
 from sys import exit
 from multiprocessing import Pool, cpu_count
@@ -31,15 +31,13 @@ def run_test(args):
     `testname`.
     """
     from subprocess import Popen, PIPE, STDOUT
-    from os import environ, getcwd
 
     testname, tool, exploit_type = args
-    pp = environ["PYTHONPATH"]
-    environ["PYTHONPATH"] = getcwd()
     cmd = ["/usr/bin/python3", "{}/job_{}.py".format(tool, exploit_type), testname]
+    if CHECK_ONLY:
+        cmd.append("-c")
     process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
     stdout, stderr = process.communicate()
-    environ["PYTHONPATH"] = pp
 
     return (1, stdout) if not process.returncode else (0, stdout)
 
@@ -55,10 +53,14 @@ parser.add_argument("-n", "--cores", type=int,
                     help="The number of parallel instances to run.")
 parser.add_argument("-a", "--arch", type=str, default="x86",
                     help="The target architecture of framework.")
+parser.add_argument("-c", "--check-only", action='store_true', default=False,
+                    help="Only check chains generated previously")
 args = parser.parse_args()
 
+environ["PYTHONPATH"] = getcwd()
 SYNTHETIC_VULN_DIR = join("binaries", args.arch, "synthetic", "vuln")
 REALLIFE_VULN_DIR = join("binaries", args.arch, "reallife", "vuln")
+CHECK_ONLY = args.check_only
 
 exploit_types = ["execve"]
 reallife_test_suites = list_all_reallife_test_suites()

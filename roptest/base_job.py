@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 from argparse import ArgumentParser
-from os.path import dirname, realpath
+from os.path import dirname, realpath, exists
 from sys import exit
 from subprocess import Popen, PIPE, STDOUT
 
@@ -53,11 +53,16 @@ class BaseJob:
         self.create_loggers()
         self.print_parameters()
 
-        # Job specific action
-        self.job_specific()
+        if not self.check_only:
+            # Job specific action
+            self.job_specific()
 
-        # Actual run of tool.
-        self.run_rop_tool()
+            # Actual run of tool.
+            self.run_rop_tool()
+
+        if not exists(self.ropchain):
+            self.failure("ERROR (not generated)")
+            exit(1)
 
         # Prepare input date for target test binary.
         self.write_input()
@@ -80,6 +85,9 @@ class BaseJob:
                             help="The number of seconds for timeout test")
         parser.add_argument("binary", type=str,
                             help="Binary for testing")
+        parser.add_argument("-c", "--check-only",
+                            action='store_true', default=False,
+                            help="Only check chain generated previously")
         return parser
 
     @staticmethod
@@ -110,6 +118,7 @@ class BaseJob:
     def initialize_parameters(self, args):
         from os.path import isabs, relpath
         from os import getcwd
+        self.check_only = args.check_only
         self.cwd = getcwd()
         if args.script_dir:
             self.script_dir = args.script_dir
@@ -129,6 +138,7 @@ class BaseJob:
         self.debug("arch: '{}'".format(self.arch))
         self.debug("script_dir: '{}'".format(self.script_dir))
         self.debug("timeout: '{}'".format(self.timeout))
+        self.debug("check only {}".format(self.check_only))
 
     def job_specific(self):
         """Do job specific action."""
