@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from os.path import join, splitext, basename, isdir, dirname
+from os.path import join, splitext, basename, isdir, dirname, exists
 from os import listdir, environ, getcwd
 from argparse import ArgumentParser
 from sys import exit
@@ -80,7 +80,9 @@ if args.binary:
     test_suite = dirname(args.binary)
     test_suites[test_suite] = join(REALLIFE_VULN_DIR, test_suite)
 else:
-    test_suites["synthetic"] = SYNTHETIC_VULN_DIR
+    if exists(SYNTHETIC_VULN_DIR):
+        test_suites["synthetic"] = SYNTHETIC_VULN_DIR
+
     if not args.synthetic:
         if args.real_life:
             if args.real_life not in reallife_test_suites:
