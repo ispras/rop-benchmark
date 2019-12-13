@@ -32,12 +32,15 @@ def run_test(args):
     """
     from subprocess import Popen, PIPE, STDOUT
 
-    testname, tool, exploit_type = args
-    cmd = ["/usr/bin/python3", "{}/job_{}.py".format(tool, exploit_type), testname]
-    if CHECK_ONLY:
-        cmd.append("-c")
-    process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
-    stdout, stderr = process.communicate()
+    try:
+        testname, tool, exploit_type = args
+        cmd = ["/usr/bin/python3", "{}/job_{}.py".format(tool, exploit_type), testname]
+        if CHECK_ONLY:
+            cmd.append("-c")
+        process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
+        stdout, stderr = process.communicate()
+    except KeyboardInterrupt:
+        return (1, "stopped by user")
 
     return (1, stdout) if not process.returncode else (0, stdout)
 
@@ -98,30 +101,34 @@ for exp_type in exploit_types:
 n_core = args.cores if args.cores is not None else cpu_count()
 print("---- Run rop-benchmark in {} parallel jobs ----".format(n_core))
 proc_pool = Pool(n_core)
-for tool in tools:
-    for exploit_type in exploit_types:
-        for test_suite_name, test_suite_dir in test_suites.items():
-            if args.binary:
-                tests = [join(test_suite_dir, basename(args.binary))]
-            else:
-                print("=== Tool '{}' === Exp. type '{}' === Test suite '{}'"
-                      .format(tool, exploit_type, test_suite_name))
-                tests = list_tests(test_suite_dir)
-            passed = 0
-            current_id = 1
-            run_test_args = [(test, tool, exploit_type) for test in tests]
-            for r in proc_pool.imap(run_test, run_test_args):
-                is_passed, bstdout = r
-                if bstdout:
-                    stdout = bstdout.decode()
-                    print(f"{current_id: >{4}}:{stdout}", end="")
-                passed += is_passed
-                current_id += 1
-            results[exploit_type][tool][test_suite_name] = (passed, len(tests))
-            if not args.binary:
-                print("--- Result --- {} {} {} : {} / {} (passed/all)"
-                      .format(tool, exploit_type, test_suite_name,
-                              passed, len(tests)))
+try:
+    for tool in tools:
+        for exploit_type in exploit_types:
+            for test_suite_name, test_suite_dir in test_suites.items():
+                if args.binary:
+                    tests = [join(test_suite_dir, basename(args.binary))]
+                else:
+                    print("=== Tool '{}' === Exp. type '{}' === Test suite '{}'"
+                          .format(tool, exploit_type, test_suite_name))
+                    tests = list_tests(test_suite_dir)
+                passed = 0
+                current_id = 1
+                run_test_args = [(test, tool, exploit_type) for test in tests]
+                for r in proc_pool.imap(run_test, run_test_args):
+                    is_passed, bstdout = r
+                    if bstdout:
+                        stdout = bstdout.decode()
+                        print(f"{current_id: >{4}}:{stdout}", end="")
+                    passed += is_passed
+                    current_id += 1
+                results[exploit_type][tool][test_suite_name] = (passed, len(tests))
+                if not args.binary:
+                    print("--- Result --- {} {} {} : {} / {} (passed/all)"
+                          .format(tool, exploit_type, test_suite_name,
+                                  passed, len(tests)))
+except KeyboardInterrupt:
+    proc_pool.terminate()
+    print("\n\nStopped by user")
 
 print("--== Overall results summary ==--")
 print(results)
