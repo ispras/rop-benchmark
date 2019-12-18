@@ -30,7 +30,7 @@ class BaseJob:
 
     @staticmethod
     def determine_arch(binary):
-        """Return 32 or 64 depending from base binary bitness."""
+        """Return arch depending from binary architecture, used as key into `vuln_trigger_data`."""
         # Note: it should be implemented in LinuxJob and WindowsJob
         return NotImplemented
 

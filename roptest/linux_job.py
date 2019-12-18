@@ -12,14 +12,15 @@ class LinuxJob(BaseJob):
 
     def __init__(self):
         super().__init__()
-        self.vuln_trigger_data[32] = 'a' * 25
-        self.vuln_trigger_data[64] = 'a' * 29
+        self.vuln_trigger_data['EM_386'] = 'a' * 25
+        self.vuln_trigger_data['EM_X86_64'] = 'a' * 29
+        self.vuln_trigger_data['EM_MIPS'] = 'a' * 8
 
     @staticmethod
     def determine_arch(binary):
         with open(binary, "rb") as bin_data:
             elf = ELFFile(bin_data)
-            return elf.elfclass
+            return elf['e_machine']
 
     @staticmethod
     def find_rw_section(binary, section_name=".got.plt"):
