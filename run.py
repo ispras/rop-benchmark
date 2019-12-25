@@ -6,6 +6,9 @@ from sys import exit
 from multiprocessing import Pool, cpu_count
 
 
+global timeout
+
+
 def list_all_reallife_test_suites():
     """Return all directories placed under binaries/reallife/vuln"""
     d = REALLIFE_VULN_DIR
@@ -35,6 +38,8 @@ def run_test(args):
     try:
         testname, tool, exploit_type = args
         cmd = ["/usr/bin/python3", "{}/job_{}.py".format(tool, exploit_type), testname]
+        if timeout is not None:
+            cmd += ["-t", str(timeout)]
         if CHECK_ONLY:
             cmd.append("-c")
         process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
@@ -60,7 +65,11 @@ parser.add_argument("-c", "--check-only", action='store_true', default=False,
                     help="Only check chains generated previously")
 parser.add_argument("-b", "--binary", type=str,
                     help="Run particular binary e.g. openbsd-62/ac.bin")
+parser.add_argument("--timeout", type=int,
+                    help="The timeout in seconds for each binary")
 args = parser.parse_args()
+
+timeout = args.timeout
 
 environ["PYTHONPATH"] = getcwd()
 SYNTHETIC_VULN_DIR = join("binaries", args.arch, "synthetic", "vuln")
