@@ -17,8 +17,24 @@ RUN apt-get update && \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen && \
     sed 's@#!/bin/sh@#!/bin/bash@g' -i /sbin/ldconfig && \
-    rm /bin/sh && ln -s /zh /bin/sh && \
-    rm -rf /var/lib/apt/lists/* /root/.cache
+# install triton
+    apt-get install -y curl unzip cmake libboost-dev nano && \
+    pip3 install pwn && \
+    curl -o z3.tgz -L  https://github.com/Z3Prover/z3/archive/z3-4.5.0.tar.gz && \
+    tar zxf z3.tgz && cd z3-z3-4.5.0 && \
+    CC=clang CXX=clang++ python scripts/mk_make.py && \
+    cd build && make -j4 && make install && cd ../../ && \ 
+    curl -o cap.tgz -L https://github.com/aquynh/capstone/archive/4.0.1.tar.gz && \
+    tar xvf cap.tgz && cd capstone-4.0.1/ && ./make.sh && make install && cd ../ && \
+    curl -o triton.zip -L https://github.com/JonathanSalwan/Triton/archive/3cb262ee7920225b4102ed854f45b81d9e13a3ff.zip && \
+    unzip triton.zip && cd Triton* && mkdir build && cd build && \
+    cmake ../ -DPYTHON36=on && make -j4 && make install && \
+    cd ../../ && rm -rf capstone-* Triton* cap.tgz triton.zip z3-z3-4.5.0 z3.tgz && \
+# install exrop
+   curl -o exrop.zip -L https://github.com/d4em0n/exrop/archive/1b7ab06a749d3d5b78b8ada143d70f0d3b3fa27f.zip && \
+   unzip exrop.zip && mv exrop-* exrop && rm -rf exrop.zip && \
+   rm /bin/sh && ln -s /zh /bin/sh && \
+   rm -rf /var/lib/apt/lists/* /root/.cache
 
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
