@@ -33,7 +33,7 @@ class Exrop:
         except TimeoutExpired:
             process.kill()
             self.logger.critical("FAIL TIMEOUT")
-            exit(1)
+            exit(3)
 
         if process.returncode != 0:
             self.logger.error("Compilation ERROR with {} (exrop)".format(process.returncode))

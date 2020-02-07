@@ -25,7 +25,7 @@ class Angrop:
         except TimeoutExpired:
             process.kill()
             self.logger.critical("FAIL TIMEOUT")
-            exit(1)
+            exit(3)
 
         if process.returncode != 0:
             self.logger.error("Compilation ERROR with {} (angrop)".format(process.returncode))

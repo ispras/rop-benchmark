@@ -24,7 +24,7 @@ class Ropper:
         except TimeoutExpired:
             process.kill()
             self.logger.critical("FAIL TIMEOUT")
-            exit(1)
+            exit(3)
 
         if process.returncode != 0:
             self.logger.error("Compilation ERROR with {} (ropper)".format(process.returncode))
@@ -55,7 +55,7 @@ class Ropper:
             except TimeoutExpired:
                 script_p.kill()
                 self.logger.critical("FAIL TIMEOUT")
-                exit(1)
+                exit(3)
 
             if script_p.returncode != 0:
                 self.logger.error("Compilation ERROR with {} (ropper script)".format(script_p.returncode))

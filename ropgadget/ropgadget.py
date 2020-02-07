@@ -27,7 +27,7 @@ class ROPGadget:
         except TimeoutExpired:
             process.kill()
             self.logger.critical("FAIL TIMEOUT")
-            exit(1)
+            exit(3)
 
         if process.returncode != 0:
             self.logger.error("Compilation ERROR with {} (ROPgadget)".format(process.returncode))
@@ -59,7 +59,7 @@ class ROPGadget:
             except TimeoutExpired:
                 script_p.kill()
                 self.logger.critical("FAIL TIMEOUT")
-                exit(1)
+                exit(3)
 
             if script_p.returncode != 0:
                 self.logger.error("Compilation ERROR with {} (ROPgadget script)".format(script_p.returncode))

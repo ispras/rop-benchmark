@@ -32,7 +32,7 @@ class Ropgenerator:
         except TimeoutExpired:
             process.kill()
             self.logger.critical("FAIL TIMEOUT")
-            exit(1)
+            exit(3)
 
         if process.returncode != 0:
             self.logger.error("Compilation ERROR with {} (ropgenerator)".format(process.returncode))
@@ -68,7 +68,7 @@ class Ropgenerator:
             except TimeoutExpired:
                 script_p.kill()
                 self.logger.critical("FAIL TIMEOUT")
-                exit(1)
+                exit(3)
 
             if script_p.returncode != 0:
                 self.logger.error("Compilation ERROR with {} (ropgenerator script)".format(script_p.returncode))

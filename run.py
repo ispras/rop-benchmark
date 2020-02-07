@@ -47,7 +47,7 @@ def run_test(args):
     except KeyboardInterrupt:
         return (1, "stopped by user")
 
-    return (1, stdout) if not process.returncode else (0, stdout)
+    return (process.returncode, stdout)
 
 
 parser = ArgumentParser(description=("Rop-benchmark entry point. "
@@ -126,12 +126,14 @@ try:
                 suites.append((tool, exploit_type, test_suite_name, len(tests)))
     i = 0
     passed = 0
+    failed = 0
+    tl = 0
     current_id = 1
     tool = None
     exploit_type = None
     test_suite_name = None
     job_cnt = None
-    for is_passed, bstdout in proc_pool.imap(run_test, run_test_args):
+    for retcode, bstdout in proc_pool.imap(run_test, run_test_args):
         if current_id == 1 and not args.binary:
             tool, exploit_type, test_suite_name, job_cnt = suites[i]
             print("=== Tool '{}' === Exp. type '{}' === Test suite '{}'"
@@ -139,15 +141,22 @@ try:
         if bstdout:
             stdout = bstdout.decode()
             print(f"{current_id: >{4}}:{stdout}", end="")
-        passed += is_passed
+        if not retcode:
+            passed += 1
+        elif retcode == 2:
+            failed += 1
+        elif retcode == 3:
+            tl += 1
         if current_id == job_cnt:
-            results[exploit_type][tool][test_suite_name] = (passed, job_cnt)
+            results[exploit_type][tool][test_suite_name] = (passed, failed, tl, job_cnt)
             if not args.binary:
                 print("--- Result --- {} {} {} : {} / {} (passed/all)"
                       .format(tool, exploit_type, test_suite_name,
                               passed, job_cnt))
             i += 1
             passed = 0
+            failed = 0
+            tl = 0
             current_id = 1
         else:
             current_id += 1
@@ -155,5 +164,5 @@ except KeyboardInterrupt:
     proc_pool.terminate()
     print("\n\nStopped by user")
 
-print("--== Overall results summary ==--")
+print("--== Overall results summary (OK, F, TL, CNT) ==--")
 print(results)
