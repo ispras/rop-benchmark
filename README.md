@@ -33,16 +33,24 @@ Entry point to run benchmark is `run.sh` script.
 
     $ ./run.sh --help
 
-		usage: run.py [-h] [-s] [-t TOOL] [-r REAL_LIFE]
+		usage: run.py [-h] [-s] [-t TOOL] [-r REAL_LIFE] [-n CORES] [-a ARCH] [-c]
+		              [-b BINARY] [--timeout TIMEOUT]
 
-		Rop-benchmark entry point
+		Rop-benchmark entry point. By default it runs all tests.
 
 		optional arguments:
 		  -h, --help            show this help message and exit
 		  -s, --synthetic       Run only synthetic test-suite
 		  -t TOOL, --tool TOOL  Run only tool
 		  -r REAL_LIFE, --real-life REAL_LIFE
-		                        Specify real life test-suite
+		                        Run only specified real life binary test-suite.
+		  -n CORES, --cores CORES
+		                        The number of parallel instances to run.
+		  -a ARCH, --arch ARCH  The target architecture of framework.
+		  -c, --check-only      Only check chains generated previously
+		  -b BINARY, --binary BINARY
+		                        Run particular binary e.g. openbsd-62/ac.bin
+		  --timeout TIMEOUT     The timeout in seconds for each binary
 
 # Benchmark structure
 
@@ -65,7 +73,7 @@ vulnerability and target binary code all together in one address space.
 
 ### Synthetic test suite
 
-Synthetic tests are written in `nasm` and placed in `binaries/synthetic/source`
+Synthetic tests are written in `nasm` and placed in `binaries/x86/synthetic/source`
 directory. Every file contains a small set of ROP gadgets and checks the ability
 to chain particular combination of gadgets.
 
@@ -75,7 +83,7 @@ To run only synthetic tests:
 
 ### Real life binaries test suite
 
-Real life binaries are placed in `binaries/reallife/orig`. It contains several
+Real life binaries are placed in `binaries/x86/reallife/orig`. It contains several
 set of binaries from different Linux distributions:
 
 1. CentOS 7.1810
@@ -116,11 +124,11 @@ To run all tests only with e.g. ropper
 Benchmark print results in terminal like this:
 
     === Tool 'angrop' === Exp. type 'execve'
-    1:rop-benchmark:angrop:binaries/reallife/vuln/centos-7.1810/ld.bfd.bin - INFO - OK
-    2:rop-benchmark:angrop:binaries/reallife/vuln/centos-7.1810/ld.gold.bin - CRITICAL - FAIL TIMEOUT
-    3:rop-benchmark:angrop:binaries/reallife/vuln/centos-7.1810/libBrokenLocale-2.17.so.bin - ERROR - Compilation ERROR with 1 (angrop)
-    4:rop-benchmark:angrop:binaries/reallife/vuln/centos-7.1810/libasound.so.2.0.0.bin - CRITICAL - FAIL HIJACK
-    --- Test suite --- binaries/reallife/vuln/centos-7.1810 : 53 / 649 (passed/all)
+    1:rop-benchmark:angrop:binaries/x86/reallife/vuln/centos-7.1810/ld.bfd.bin - INFO - OK
+    2:rop-benchmark:angrop:binaries/x86/reallife/vuln/centos-7.1810/ld.gold.bin - CRITICAL - FAIL TIMEOUT
+    3:rop-benchmark:angrop:binaries/x86/reallife/vuln/centos-7.1810/libBrokenLocale-2.17.so.bin - ERROR - Compilation ERROR with 1 (angrop)
+    4:rop-benchmark:angrop:binaries/x86/reallife/vuln/centos-7.1810/libasound.so.2.0.0.bin - CRITICAL - FAIL HIJACK
+    --- Test suite --- binaries/x86/reallife/vuln/centos-7.1810 : 53 / 649 (passed/all)
 
 There are 4 states of tests:
 
@@ -168,18 +176,18 @@ directory `job_{exploit_type}.py`.
 ## Add more synthetic tests
 
 To add a new synthetic test one may just write new .nasm64 file in
-`binaries/synthetic/source` and then compile them:
+`binaries/x86/synthetic/source` and then compile them:
 
-    $ cd binaries/synthetic
+    $ cd binaries/x86/synthetic
     $ make
 
 ## Add more real life binaries
 
 To add a new test suite of real life binaries one may create directory under
-`binaries/reallife/orig` and place original binaries there. Then compile them to
+`binaries/x86/reallife/orig` and place original binaries there. Then compile them to
 target test programs with vulnerabilities:
 
-    $ cd binaries/reallife/
+    $ cd binaries/x86/reallife/
     $ make
 
 ## Support Windows
