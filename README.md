@@ -52,6 +52,10 @@ Entry point to run benchmark is `run.sh` script.
 		                        Run particular binary e.g. openbsd-62/ac.bin
 		  --timeout TIMEOUT     The timeout in seconds for each binary
 
+# Bash to Docker
+
+    $ sudo ./bash.sh
+
 # Benchmark structure
 
 ## Payload type
