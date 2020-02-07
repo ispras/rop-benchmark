@@ -1,4 +1,4 @@
-FROM ubuntu:bionic-20190807 
+FROM ubuntu:bionic-20190807
 
 MAINTAINER Alexey Nurmukhametov
 
@@ -9,7 +9,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y locales && \
     pip3 install capstone angr pytest pybind11 && \
     pip3 install \
-      ropgadget==v5.9 \
+      ropgadget==v6.0 \
       https://github.com/salls/angrop/archive/794583f59282f45505a734b21b30b982fceee68b.zip \
       https://github.com/programa-stic/barf-project/archive/4a003e72f1dbee2723b9ece8b482473531145e8e.zip \
       https://github.com/Boyan-MILANOV/ropgenerator/archive/c63c81f03e8653dc3911e21300c00003a4224f6a.zip \
@@ -20,6 +20,6 @@ RUN apt-get update && \
     rm /bin/sh && ln -s /zh /bin/sh && \
     rm -rf /var/lib/apt/lists/* /root/.cache
 
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8     
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
