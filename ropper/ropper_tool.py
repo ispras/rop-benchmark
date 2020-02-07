@@ -12,7 +12,8 @@ class Ropper:
         self.ropchain = ropchain
 
     def run(self, timeout):
-        cmd = ["ropper", "--nocolor", "--file", self.binary, "--chain", "execve"]
+        cmd = ["ropper", "--single", "--nocolor", "--file", self.binary,
+               "--chain", "execve"]
         self.logger.debug("Run ropper: {}".format(" ".join(cmd)))
         process = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
 
