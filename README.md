@@ -115,9 +115,11 @@ support.
 
 2. [Ropper](https://github.com/sashs/ropper)
 
-3. [ropgenerator](https://github.com/Boyan-MILANOV/ropgenerator)
+3. [ROPGenerator](https://github.com/Boyan-MILANOV/ropgenerator)
 
 4. [angrop](https://github.com/salls/angrop)
+
+5. [exrop](https://github.com/d4em0n/exrop)
 
 To run all tests only with e.g. ropper
 
