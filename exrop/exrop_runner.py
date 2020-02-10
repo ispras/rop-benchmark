@@ -10,7 +10,7 @@ ropchain_path = sys.argv[2]
 elf = ELF(binary)
 rwaddr = elf.bss()
 rop = Exrop(binary)
-rop.find_gadgets(cache=False)
+rop.find_gadgets(cache=False, num_process=1)
 # execve is 59 syscall on x86_64
 chain = rop.syscall(59, ("/bin/sh", 0, 0), rwaddr)
 
