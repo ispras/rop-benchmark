@@ -100,7 +100,7 @@ exploit_types = ["execve"]
 reallife_test_suites = list_all_reallife_test_suites()
 
 if not args.tool:
-    tools = ["ropgadget", "angrop", "ropgenerator", "ropper", "exrop"]
+    tools = ["ropgadget", "angrop", "ropgenerator", "ropper", "exrop", "ropium"]
 else:
     tools = [args.tool]
 

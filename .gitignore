@@ -6,3 +6,4 @@
 __pycache__/
 *.merg_o
 *.log
+*.ropium_raw_gadgets.*

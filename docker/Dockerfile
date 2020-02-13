@@ -7,6 +7,7 @@ COPY ./zh /zh
 RUN apt-get update && \
     apt-get install -y python python3 python3-pip make gcc nasm git && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y locales && \
+# install tools
     pip3 install capstone angr pytest pybind11 && \
     pip3 install psutil && \
     pip3 install \
@@ -15,9 +16,12 @@ RUN apt-get update && \
       https://github.com/programa-stic/barf-project/archive/4a003e72f1dbee2723b9ece8b482473531145e8e.zip \
       https://github.com/Boyan-MILANOV/ropgenerator/archive/c63c81f03e8653dc3911e21300c00003a4224f6a.zip \
       https://github.com/sashs/Ropper/archive/75a9504683427e373c7bb6d6a54ed20bd98905ff.zip && \
+# uncomment locales and generate them
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen && \
+# replace some shebangs to /bin/bash
     sed 's@#!/bin/sh@#!/bin/bash@g' -i /sbin/ldconfig && \
+    sed 's@#!/bin/sh@#!/bin/bash@g' -i /bin/lesspipe && \
 # install triton
     apt-get install -y curl unzip cmake libboost-dev nano && \
     pip3 install pwn && \
@@ -32,10 +36,19 @@ RUN apt-get update && \
     cmake ../ -DPYTHON36=on && make -j4 && make install && \
     cd ../../ && rm -rf capstone-* Triton* cap.tgz triton.zip z3-z3-4.5.0 z3.tgz && \
 # install exrop
-   curl -o exrop.zip -L https://github.com/d4em0n/exrop/archive/1b7ab06a749d3d5b78b8ada143d70f0d3b3fa27f.zip && \
-   unzip exrop.zip && mv exrop-* exrop && rm -rf exrop.zip && \
-   rm /bin/sh && ln -s /zh /bin/sh && \
-   rm -rf /var/lib/apt/lists/* /root/.cache
+    curl -o exrop.zip -L https://github.com/d4em0n/exrop/archive/1b7ab06a749d3d5b78b8ada143d70f0d3b3fa27f.zip && \
+    unzip exrop.zip && mv exrop-* exrop && rm -rf exrop.zip && \
+# install ropium
+    curl -o ropium.zip -L https://github.com/Boyan-MILANOV/ropium/archive/f6bb2113474cf39e2aeeb478270bcc235b245301.zip && \
+    unzip ropium.zip && mv ropium-* ropium && cd ropium && \
+    make -j8 && make install && \
+    cd / && rm -rf ropium* && \
+# create symlink /bin/sh -> /zh
+    rm -rf /bin/sh && ln -s /zh /bin/sh && \
+    rm -rf /var/lib/apt/lists/* /root/.cache
+
+# libc.so built with popen calling /bin/bash instead of /bin/sh
+COPY ./libc.so /lib/x86_64-linux-gnu/libc.so.6
 
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
