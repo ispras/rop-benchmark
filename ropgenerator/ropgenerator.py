@@ -52,6 +52,9 @@ class Ropgenerator:
                 import re
                 new_str = re.sub(b'\x1b\[93m', b'', re.sub(b'\x1b\[0m', b'', line[1:]))
                 ropchain_generator.append(new_str)
+        if not ropchain_generator:
+            self.logger.error("ROPGenerator could not generate a chain")
+            exit(1)
         ropchain_generator.append(b"print p")
 
         script_path = "{}.ropgenerator.script".format(self.binary)

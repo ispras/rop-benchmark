@@ -43,6 +43,9 @@ class ROPGadget:
                 n = i
             if i > n:
                 ropchain_generator.append(line[1:])
+        if not ropchain_generator:
+            self.logger.error("ROPgadget could not generate a chain")
+            exit(1)
         ropchain_generator.append(b"print p")
 
         script_path = "{}.ropgadget.script".format(self.binary)
