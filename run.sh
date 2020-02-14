@@ -1,7 +1,7 @@
 #!/bin/bash
 
 _term() {
-  docker stop rop-benchmark
+  docker stop rop-benchmark > /dev/null
 }
 
 trap _term SIGTERM
