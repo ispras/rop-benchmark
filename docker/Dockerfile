@@ -8,6 +8,7 @@ RUN apt-get update && \
     apt-get install -y python python3 python3-pip make gcc nasm git && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y locales && \
     pip3 install capstone angr pytest pybind11 && \
+    pip3 install psutil && \
     pip3 install \
       ropgadget==v6.0 \
       https://github.com/salls/angrop/archive/794c3f95775b33e854669bb0a3d65b8d6da86f7f.zip \
