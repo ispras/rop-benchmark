@@ -4,6 +4,7 @@ from os import listdir, environ, getcwd
 from argparse import ArgumentParser
 from sys import exit
 from multiprocessing import Pool, cpu_count
+import signal
 
 
 global timeout
@@ -25,6 +26,22 @@ def list_tests(directory):
     return sorted(tests)
 
 
+def kill_childs():
+    """Kill all child processes."""
+    from os import getpid
+    from psutil import Process, NoSuchProcess
+    for child in Process(getpid()).children(recursive=True):
+        try:
+            child.terminate()
+        except NoSuchProcess:
+            pass
+    for child in Process(getpid()).children(recursive=True):
+        try:
+            child.kill()
+        except NoSuchProcess:
+            pass
+
+
 def run_test(args):
     """Try to generate ROP chain for `testname` by `tool` for `exploit_type`
     payload.
@@ -35,17 +52,20 @@ def run_test(args):
     """
     from subprocess import Popen, PIPE, STDOUT
 
-    try:
-        testname, tool, exploit_type = args
-        cmd = ["/usr/bin/python3", "{}/job_{}.py".format(tool, exploit_type), testname]
-        if timeout is not None:
-            cmd += ["-t", str(timeout)]
-        if CHECK_ONLY:
-            cmd.append("-c")
-        process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
-        stdout, stderr = process.communicate()
-    except KeyboardInterrupt:
-        return (1, "stopped by user")
+    testname, tool, exploit_type = args
+    cmd = ["/usr/bin/python3", "{}/job_{}.py".format(tool, exploit_type), testname]
+    if timeout is not None:
+        cmd += ["-t", str(timeout)]
+    if CHECK_ONLY:
+        cmd.append("-c")
+
+    def handle(signum, frame):
+        kill_childs()
+        exit(1)
+
+    signal.signal(signal.SIGTERM, handle)
+    process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
+    stdout, stderr = process.communicate()
 
     return (process.returncode, stdout)
 
@@ -112,6 +132,14 @@ for exp_type in exploit_types:
 n_core = args.cores if args.cores is not None else cpu_count()
 print("---- Run rop-benchmark in {} parallel jobs ----".format(n_core))
 proc_pool = Pool(n_core)
+
+def handle(signum, frame):
+    proc_pool.terminate()
+    print("--== Overall results summary (OK, F, TL, CNT) ==--")
+    print(results)
+    exit(1)
+
+signal.signal(signal.SIGTERM, handle)
 try:
     run_test_args = []
     suites = []
