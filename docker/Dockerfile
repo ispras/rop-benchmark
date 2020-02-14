@@ -13,7 +13,7 @@ RUN apt-get update && \
       https://github.com/salls/angrop/archive/794c3f95775b33e854669bb0a3d65b8d6da86f7f.zip \
       https://github.com/programa-stic/barf-project/archive/4a003e72f1dbee2723b9ece8b482473531145e8e.zip \
       https://github.com/Boyan-MILANOV/ropgenerator/archive/c63c81f03e8653dc3911e21300c00003a4224f6a.zip \
-      https://github.com/sashs/Ropper/archive/781adfa0859637d653a5c0f6b17a7eff2560787f.zip && \
+      https://github.com/sashs/Ropper/archive/75a9504683427e373c7bb6d6a54ed20bd98905ff.zip && \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen && \
     sed 's@#!/bin/sh@#!/bin/bash@g' -i /sbin/ldconfig && \
