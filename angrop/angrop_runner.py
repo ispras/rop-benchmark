@@ -9,7 +9,7 @@ ropchain_path = sys.argv[2]
 
 project = Project(binary)
 rop = project.analyses.ROP()
-rop.find_gadgets(processes=1, show_progress=False)
+rop.find_gadgets_single_threaded(show_progress=False)
 chain = rop.execve(b"/bin/sh\x00")
 
 script_path = "{}.angrop.script".format(binary)
