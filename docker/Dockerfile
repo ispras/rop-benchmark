@@ -10,7 +10,7 @@ RUN apt-get update && \
     pip3 install capstone angr pytest pybind11 && \
     pip3 install \
       ropgadget==v6.0 \
-      https://github.com/salls/angrop/archive/794583f59282f45505a734b21b30b982fceee68b.zip \
+      https://github.com/salls/angrop/archive/794c3f95775b33e854669bb0a3d65b8d6da86f7f.zip \
       https://github.com/programa-stic/barf-project/archive/4a003e72f1dbee2723b9ece8b482473531145e8e.zip \
       https://github.com/Boyan-MILANOV/ropgenerator/archive/c63c81f03e8653dc3911e21300c00003a4224f6a.zip \
       https://github.com/sashs/Ropper/archive/781adfa0859637d653a5c0f6b17a7eff2560787f.zip && \
@@ -23,7 +23,7 @@ RUN apt-get update && \
     curl -o z3.tgz -L  https://github.com/Z3Prover/z3/archive/z3-4.5.0.tar.gz && \
     tar zxf z3.tgz && cd z3-z3-4.5.0 && \
     CC=clang CXX=clang++ python scripts/mk_make.py && \
-    cd build && make -j4 && make install && cd ../../ && \ 
+    cd build && make -j4 && make install && cd ../../ && \
     curl -o cap.tgz -L https://github.com/aquynh/capstone/archive/4.0.1.tar.gz && \
     tar xvf cap.tgz && cd capstone-4.0.1/ && ./make.sh && make install && cd ../ && \
     curl -o triton.zip -L https://github.com/JonathanSalwan/Triton/archive/3cb262ee7920225b4102ed854f45b81d9e13a3ff.zip && \
