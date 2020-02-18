@@ -115,11 +115,13 @@ support.
 
 2. [Ropper](https://github.com/sashs/ropper)
 
-3. [ROPGenerator](https://github.com/Boyan-MILANOV/ropgenerator)
+3. [ROPGenerator](https://github.com/Boyan-MILANOV/ropium/tree/c63c81f03e8653dc3911e21300c00003a4224f6a)
 
 4. [angrop](https://github.com/salls/angrop)
 
 5. [exrop](https://github.com/d4em0n/exrop)
+
+6. [ropium](https://github.com/Boyan-MILANOV/ropium)
 
 To run all tests only with e.g. ropper
 
