@@ -27,15 +27,16 @@ RUN apt-get update && \
     pip3 install pwn && \
     curl -o z3.tgz -L  https://github.com/Z3Prover/z3/archive/z3-4.6.0.tar.gz && \
     tar zxf z3.tgz && cd z3-z3-4.6.0 && \
-    CC=clang CXX=clang++ python scripts/mk_make.py && \
+    CC=clang CXX=clang++ python scripts/mk_make.py --prefix=/opt/z3 && \
     cd build && make -j4 && make install && cd ../../ && \
     curl -o cap.tgz -L https://github.com/aquynh/capstone/archive/4.0.1.tar.gz && \
     tar xvf cap.tgz && cd capstone-4.0.1/ && ./make.sh && make install && cd ../ && \
     curl -o triton.zip -L https://github.com/JonathanSalwan/Triton/archive/fb3241e94a3e1d0be9831bfc7a865246ee4c9e30.zip && \
     unzip triton.zip && cd Triton* && mkdir build && cd build && \
-    cmake ../ -DPYTHON36=on && make -j4 && make install && \
+    cmake ../ -DPYTHON36=on -DZ3_INCLUDE_DIRS=/opt/z3/include -DZ3_LIBRARIES=/opt/z3/lib/libz3.so && make -j4 && make install && \
     cd ../../ && rm -rf capstone-* Triton* cap.tgz triton.zip z3-z3-4.5.0 z3.tgz && \
 # install exrop
+    pip3 install numba && \
     curl -o exrop.zip -L https://github.com/d4em0n/exrop/archive/c0b39bec2990dd80d5c4ed9a4895fde32817bcfe.zip && \
     unzip exrop.zip && mv exrop-* exrop && rm -rf exrop.zip && \
 # install ropium
