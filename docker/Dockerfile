@@ -12,7 +12,7 @@ RUN apt-get update && \
     pip3 install psutil && \
     pip3 install \
       ropgadget==v6.0 \
-      https://github.com/salls/angrop/archive/794c3f95775b33e854669bb0a3d65b8d6da86f7f.zip \
+      https://github.com/salls/angrop/archive/794583f59282f45505a734b21b30b982fceee68b.zip \
       https://github.com/programa-stic/barf-project/archive/4a003e72f1dbee2723b9ece8b482473531145e8e.zip \
       https://github.com/Boyan-MILANOV/ropgenerator/archive/c63c81f03e8653dc3911e21300c00003a4224f6a.zip \
       https://github.com/sashs/Ropper/archive/75a9504683427e373c7bb6d6a54ed20bd98905ff.zip && \
