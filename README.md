@@ -141,9 +141,14 @@ Benchmark print results in terminal like this:
 There are 4 states of tests:
 
 1. `ERROR` - tool didn't generate a ROP chain.
-2. `FAIL TIMEOUT` -  tool exceeds the time limit (300 s as default).
-3. `FAIL HIJACK` - tool generated a ROP chain but it didn't run `/bin/sh`.
+2. `FAIL TIMEOUT` (TL) -  tool exceeds the time limit (300 s as default).
+3. `FAIL HIJACK` (F) - tool generated a ROP chain but it didn't run `/bin/sh`.
 4. `OK` - tool generated a ROP chain and it ran `/bin/sh`.
+
+![ROP Benchmark results](results.svg)
+
+Note: Ropper almost always generates a ROP chain script file, so `FAIL HIJACK`s were not evaluated.
+[results.pdf](results.pdf) contains a hyperlink for each tool repository with a specific commit hash.
 
 # How to Contribute
 
