@@ -2,8 +2,8 @@
 
 This repository contains tests for benchmarking ROP compilers. ROP Benchmark is
 intended to compare ROP compilers. ROP Benchmark was used to evaluate
-existing open source tools in "Survey of methods for automated code-reuse
-exploit generation" paper.
+existing open source tools in ["Survey of methods for automated code-reuse
+exploit generation"](https://www.ispras.ru/preprints/docs/prep_32_2019.pdf) paper.
 
 # Installation
 
@@ -208,3 +208,18 @@ target test programs with vulnerabilities:
 To support windows you should implement platform specific functions in
 `roptest/windows_job.py` and create environment suitable for testing
 workability of exploits like docker container on Linux.
+
+# Cite us
+
+Vishnyakov A.V., Nurmukhametov A.R. Survey of methods for automated code-reuse exploit generation. Proceedings of the Institute for System Programming, vol. 31, issue 6, 2019, pp. 99-124 DOI: 10.15514/ISPRAS-2019-31(6)-6.
+
+    @article{vishnyakov19,
+     title   = {Survey of methods for automated code-reuse exploit generation},
+     author  = {Vishnyakov, A.~V. and Nurmukhametov A.~R.},
+     journal = {Proceedings of the Institute for System Programming of the RAS},
+     volume  = {31},
+     number  = {6},
+     pages   = {99--124},
+     year    = {2019},
+     doi     = {10.15514/ISPRAS-2019-31(6)-6},
+    }
