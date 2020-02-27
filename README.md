@@ -215,7 +215,7 @@ Vishnyakov A.V., Nurmukhametov A.R. Survey of methods for automated code-reuse e
 
     @article{vishnyakov19,
      title   = {Survey of methods for automated code-reuse exploit generation},
-     author  = {Vishnyakov, A.~V. and Nurmukhametov A.~R.},
+     author  = {Vishnyakov, A.~V. and Nurmukhametov, A.~R.},
      journal = {Proceedings of the Institute for System Programming of the RAS},
      volume  = {31},
      number  = {6},
