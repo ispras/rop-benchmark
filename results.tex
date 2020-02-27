@@ -1,0 +1,28 @@
+\documentclass[]{standalone}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage[hidelinks]{hyperref}
+\begin{document}
+\begin{tabular}{ l | r r r | r r r | r r r | r r r | r r r }
+\toprule
+Test suite & \multicolumn{3}{c |}{Synthetic} & \multicolumn{3}{c |}{OpenBSD 6.4}
+           & \multicolumn{3}{c |}{OpenBSD 6.2} & \multicolumn{3}{c |}{Debian 10}
+           & \multicolumn{3}{c}{CentOS 7} \\
+Number of files & \multicolumn{3}{c |}{12} & \multicolumn{3}{c |}{410} & \multicolumn{3}{c |}{397} & \multicolumn{3}{c |}{689} & \multicolumn{3}{c}{649} \\
+\midrule
+ Tool         &   OK &   F &   TL &   OK &   F &   TL &   OK &   F &   TL &   OK &   F &   TL &   OK &   F &   TL \\
+ \href{https://github.com/JonathanSalwan/ROPgadget/tree/c6a1b5167725fb7837fabd32a8f907c452324373}{ROPgadget}
+              &    1 &   0 &    0 &    2 &   0 &    0 &    4 &   0 &    0 &    7 &   0 &    0 &    8 &   0 &    0 \\
+ \href{https://github.com/salls/angrop/tree/794583f59282f45505a734b21b30b982fceee68b}{angrop}
+              &    5 &   0 &    0 &   10 &   1 &    2 &   26 &   1 &    3 &   89 &   8 &    1 &   57 &   4 &    0 \\
+ \href{https://github.com/Boyan-MILANOV/ropium/tree/c63c81f03e8653dc3911e21300c00003a4224f6a}{ROPGenerator}
+              &    3 &   0 &    0 &    4 &   0 &    2 &   33 &   3 &    2 &   99 &   3 &    2 &   70 &   3 &    1 \\
+ \href{https://github.com/Boyan-MILANOV/ropium/tree/f6bb2113474cf39e2aeeb478270bcc235b245301}{ROPium}
+              &    4 &   0 &    0 &    1 &   0 &    0 &    5 &   0 &    0 &   29 &   3 &    0 &   32 &   3 &    0 \\
+ \href{https://github.com/sashs/Ropper/tree/75a9504683427e373c7bb6d6a54ed20bd98905ff}{Ropper}
+              &    2 &  -- &    0 &    3 &  -- &    0 &   15 &  -- &    0 &   53 &  -- &    0 &   31 &  -- &    0 \\
+ \href{https://github.com/d4em0n/exrop/tree/c0b39bec2990dd80d5c4ed9a4895fde32817bcfe}{Exrop}
+              &    3 &   0 &    0 &    0 &  33 &   29 &   12 &  26 &   13 &   76 &  19 &    5 &   48 &   8 &   12 \\
+\bottomrule
+\end{tabular}
+\end{document}
