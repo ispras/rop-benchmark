@@ -145,6 +145,10 @@ There are 4 states of tests:
 3. `FAIL HIJACK` (F) - tool generated a ROP chain but it didn't run `/bin/sh`.
 4. `OK` - tool generated a ROP chain and it ran `/bin/sh`.
 
+## Evaluation
+
+Each tool was run single-threaded with 1 hour time limit.
+
 ![ROP Benchmark results](results.svg)
 
 Note: Ropper almost always generates a ROP chain script file, so `FAIL HIJACK`s were not evaluated.
