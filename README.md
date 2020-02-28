@@ -51,6 +51,8 @@ Entry point to run benchmark is `run.sh` script.
 		  -b BINARY, --binary BINARY
 		                        Run particular binary e.g. openbsd-62/ac.bin
 		  --timeout TIMEOUT     The timeout in seconds for each binary
+      --clean               Clean up working tree in current directory.
+                            Be careful to use it because it may delete results.
 
 # Bash to Docker
 

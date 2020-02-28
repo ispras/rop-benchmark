@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from os.path import join, splitext, basename, isdir, dirname, exists
+from os.path import join, splitext, basename, isdir, dirname, exists, abspath
 from os import listdir, environ, getcwd
 from argparse import ArgumentParser
 from sys import exit
@@ -70,6 +70,17 @@ def run_test(args):
     return (process.returncode, stdout)
 
 
+def do_clean():
+    from subprocess import Popen, PIPE, STDOUT
+    print("Clean-up working tree")
+    cmd = ["git", "clean", "./", "-f", "-d", "-x"]
+    process = Popen(cmd, stdout=PIPE, stderr=STDOUT,
+                    cwd=join(BENCHMARK_DIR, "binaries"))
+    stdout, stderr = process.communicate()
+    if process.returncode:
+        print(stdout)
+        print(stderr)
+
 parser = ArgumentParser(description=("Rop-benchmark entry point. "
                                     "By default it runs all tests."))
 parser.add_argument("-s", "--synthetic", action='store_true',
@@ -87,14 +98,23 @@ parser.add_argument("-b", "--binary", type=str,
                     help="Run particular binary e.g. openbsd-62/ac.bin")
 parser.add_argument("--timeout", type=int,
                     help="The timeout in seconds for each binary")
+parser.add_argument("--clean", action="store_true", default=False,
+                    help=("Clean rop-benchmark working tree "
+                          "from any artifacts of previous runs"))
 args = parser.parse_args()
 
 timeout = args.timeout
 
-environ["PYTHONPATH"] = getcwd()
-SYNTHETIC_VULN_DIR = join("binaries", args.arch, "synthetic", "vuln")
-REALLIFE_VULN_DIR = join("binaries", args.arch, "reallife", "vuln")
+BENCHMARK_DIR = abspath(dirname(__file__))
+SYNTHETIC_VULN_DIR = join(BENCHMARK_DIR, "binaries", args.arch, "synthetic", "vuln")
+REALLIFE_VULN_DIR = join(BENCHMARK_DIR, "binaries", args.arch, "reallife", "vuln")
 CHECK_ONLY = args.check_only
+
+environ["PYTHONPATH"] = BENCHMARK_DIR
+
+if args.clean:
+    do_clean()
+    exit(0)
 
 exploit_types = ["execve"]
 reallife_test_suites = list_all_reallife_test_suites()
