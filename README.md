@@ -154,6 +154,23 @@ Each tool was run single-threaded with 1 hour time limit.
 Note: Ropper almost always generates a ROP chain script file, so `FAIL HIJACK`s were not evaluated.
 [results.pdf](results.pdf) contains a hyperlink for each tool repository with a specific commit hash.
 
+# Auxiliary scripts
+
+## common.py
+
+The script helps to identify two things:
+
+1. the common subset of binaries that are OK at least for one instrument,
+2. the difference between the particular tool result and the common subset.
+
+To print the common subset:
+
+    $ ./common.py rop-benchmark.output 
+
+To print the difference:
+
+    $ ./common.py rop-benchmark.output --diff ropper
+
 # How to Contribute
 
 If you want to contribute then you may:
