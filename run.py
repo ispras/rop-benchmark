@@ -162,8 +162,8 @@ try:
     test_suite_name = None
     job_cnt = None
     for retcode, bstdout in proc_pool.imap(run_test, run_test_args):
+        tool, exploit_type, test_suite_name, job_cnt = suites[i]
         if current_id == 1 and not args.binary:
-            tool, exploit_type, test_suite_name, job_cnt = suites[i]
             print("=== Tool '{}' === Exp. type '{}' === Test suite '{}'"
                   .format(tool, exploit_type, test_suite_name))
         if bstdout:
