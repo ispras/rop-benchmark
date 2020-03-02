@@ -10,6 +10,8 @@ parser.add_argument("results", type=str, help="Benchmark results file")
 parser.add_argument("--latex", action="store_true", help="Print LaTeX table")
 args = parser.parse_args()
 
+highlight_row = ">{\columncolor[gray]{0.9}}"
+
 t = None
 with open(args.results, "r") as f:
     t = ast.literal_eval(f.readlines()[-1])
@@ -37,10 +39,11 @@ if args.latex:
     print(r"""\documentclass[]{standalone}
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{colortbl}
 \begin{document}
 \begin{tabular}{ l""", end='')
     for _ in binary_sets:
-        print(" | r r r", end='')
+        print(f" | {highlight_row}r r r", end='')
     print(r""" }
 \toprule
 Test suite""", end='')
