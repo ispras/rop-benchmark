@@ -67,14 +67,21 @@ class BaseJob:
         # Prepare input date for target test binary.
         self.write_input()
 
-        # Run test binary.
-        self.run_vuln_binary()
+        # Perform 10 functionality tests.
+        stable = True
+        for _ in range(10):
+            # Run test binary.
+            self.run_vuln_binary()
 
-        # Check if exploit correctly works.
-        if self.check_functionality():
-            exit(0)
-        else:
-            exit(2)
+            # Check if exploit correctly works.
+            if self.check_functionality():
+                stable = False
+            else:
+                if not stable:
+                    self.debug("Unstable functionality tests")
+                exit(2)
+
+        exit(0)
 
     @staticmethod
     def create_parser():
