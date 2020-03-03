@@ -81,6 +81,7 @@ class BaseJob:
                     self.debug("Unstable functionality tests")
                 exit(2)
 
+        self.info("OK")
         exit(0)
 
     @staticmethod
@@ -184,7 +185,6 @@ class BaseJob:
         stripped_lines = [line.strip() for line in output_lines]
         if "SUCCESS" in stripped_lines:
             if "PARAMETERS ARE CORRECT" in stripped_lines:
-                self.info("OK")
                 return True
             else:
                 self.failure("FAIL PARAMS")
