@@ -160,7 +160,7 @@ Note: Ropper almost always generates a ROP chain script file, so `FAIL HIJACK`s 
 
 ## table.py
 
-Print results table. Takes rop-benchmark output as input. `--latex` for LaTeX
+Prints results table. Takes rop-benchmark output as input. `--latex` for LaTeX
 table.
 
 ## common.py
