@@ -51,8 +51,8 @@ Entry point to run benchmark is `run.sh` script.
 		  -b BINARY, --binary BINARY
 		                        Run particular binary e.g. openbsd-62/ac.bin
 		  --timeout TIMEOUT     The timeout in seconds for each binary
-      --clean               Clean up working tree in current directory.
-                            Be careful to use it because it may delete results.
+		  --clean               Clean rop-benchmark working tree from any artifacts of
+		                        previous runs
 
 # Bash to Docker
 
@@ -157,6 +157,11 @@ Note: Ropper almost always generates a ROP chain script file, so `FAIL HIJACK`s 
 [results.pdf](results.pdf) contains a hyperlink for each tool repository with a specific commit hash.
 
 # Auxiliary scripts
+
+## table.py
+
+Print results table. Takes rop-benchmark output as input. `--latex` for LaTeX
+table.
 
 ## common.py
 
