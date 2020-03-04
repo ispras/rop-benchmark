@@ -36,11 +36,10 @@ RUN apt-get update && \
     cmake ../ -DPYTHON36=on -DZ3_INCLUDE_DIRS=/opt/z3/include -DZ3_LIBRARIES=/opt/z3/lib/libz3.so && make -j4 && make install && \
     cd ../../ && rm -rf capstone-* Triton* cap.tgz triton.zip z3-z3-4.5.0 z3.tgz && \
 # install exrop
-    pip3 install numba && \
-    curl -o exrop.zip -L https://github.com/d4em0n/exrop/archive/c0b39bec2990dd80d5c4ed9a4895fde32817bcfe.zip && \
+    curl -o exrop.zip -L https://github.com/d4em0n/exrop/archive/343eee05bd4b9d31db3e55a70a33893527225c84.zip && \
     unzip exrop.zip && mv exrop-* exrop && rm -rf exrop.zip && \
 # install ropium
-    curl -o ropium.zip -L https://github.com/Boyan-MILANOV/ropium/archive/f6bb2113474cf39e2aeeb478270bcc235b245301.zip && \
+    curl -o ropium.zip -L https://github.com/Boyan-MILANOV/ropium/archive/e7100878b75e55d775eecfd79bd549f9895f4c8c.zip && \
     unzip ropium.zip && mv ropium-* ropium && cd ropium && \
     make -j8 && make install && \
     cd / && rm -rf ropium* && \
