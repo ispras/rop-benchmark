@@ -148,6 +148,19 @@ for exp_type in exploit_types:
     results[exp_type] = {}
     for tool in tools:
         results[exp_type][tool] = {}
+test_suite_ok = {}
+for exp_type in exploit_types:
+    test_suite_ok[exp_type] = {}
+    for test_suite in test_suites:
+        test_suite_ok[exp_type][test_suite] = set()
+
+def print_results():
+    for exp_type in exploit_types:
+        oks = test_suite_ok[exp_type]
+        cnt = results[exp_type][tools[0]]
+        results[exp_type]["total"] = {t: (len(oks[t]), cnt[t][3]) for t in test_suites}
+    print("--== Overall results summary (OK, F, TL, CNT) ==--")
+    print(results)
 
 n_core = args.cores if args.cores is not None else cpu_count()
 print("---- Run rop-benchmark in {} parallel jobs ----".format(n_core))
@@ -155,8 +168,7 @@ proc_pool = Pool(n_core)
 
 def handle(signum, frame):
     proc_pool.terminate()
-    print("--== Overall results summary (OK, F, TL, CNT) ==--")
-    print(results)
+    print_results()
     exit(1)
 
 signal.signal(signal.SIGTERM, handle)
@@ -191,6 +203,7 @@ try:
             print(f"{current_id: >{4}}:{stdout}", end="")
         if not retcode:
             passed += 1
+            test_suite_ok[exploit_type][test_suite_name].add(current_id)
         elif retcode == 2:
             failed += 1
         elif retcode == 3:
@@ -212,5 +225,4 @@ except KeyboardInterrupt:
     proc_pool.terminate()
     print("\n\nStopped by user")
 
-print("--== Overall results summary (OK, F, TL, CNT) ==--")
-print(results)
+print_results()

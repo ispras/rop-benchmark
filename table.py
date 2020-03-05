@@ -17,11 +17,8 @@ with open(args.results, "r") as f:
     t = ast.literal_eval(f.readlines()[-1])
 
 t = t["execve"]
-tools = list(t.keys())
-binary_sets = t[tools[0]].keys()
-count = {}
-for b in binary_sets:
-    count[b] = t[tools[0]][b][-1]
+tools = [tool for tool in t.keys() if tool != "total"]
+binary_sets = t["total"].keys()
 
 headers = ["Tool"]
 for _ in binary_sets:
@@ -52,7 +49,13 @@ Test suite""", end='')
     print(r""" \\
 Number of files""", end='')
     for i, b in enumerate(binary_sets):
-        print(r" & \multicolumn{{3}}{{c{}}}{{{}}}".format("" if i == len(binary_sets) - 1 else " |", count[b]), end='')
+        count = t["total"][b][-1]
+        print(r" & \multicolumn{{3}}{{c{}}}{{{}}}".format("" if i == len(binary_sets) - 1 else " |", count), end='')
+    print(r""" \\
+At least one OK""", end='')
+    for i, b in enumerate(binary_sets):
+        ok = t["total"][b][0]
+        print(r" & \multicolumn{{3}}{{c{}}}{{{}}}".format("" if i == len(binary_sets) - 1 else " |", ok), end='')
     print(r""" \\
 \midrule""")
 else:
@@ -62,7 +65,14 @@ else:
     print(s)
     s = "| Total count  |"
     for b in binary_sets:
-        c = " {} ".format(count[b])
+        count = t["total"][b][-1]
+        c = " {} ".format(count)
+        s += c + " " * (19 - len(c)) +  "|"
+    print(s)
+    s = "| Total OK     |"
+    for b in binary_sets:
+        ok = t["total"][b][0]
+        c = " {} ".format(ok)
         s += c + " " * (19 - len(c)) +  "|"
     print(s)
 
