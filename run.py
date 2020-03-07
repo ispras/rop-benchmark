@@ -166,8 +166,23 @@ n_core = args.cores if args.cores is not None else cpu_count()
 print("---- Run rop-benchmark in {} parallel jobs ----".format(n_core))
 proc_pool = Pool(n_core)
 
+passed = 0
+failed = 0
+tl = 0
+tool = None
+exploit_type = None
+test_suite_name = None
+job_cnt = None
+
+def print_test_suite_result():
+    results[exploit_type][tool][test_suite_name] = (passed, failed, tl, job_cnt)
+    if not args.binary:
+        print("--- Result --- {} {} {} : {} / {} (passed/all)"
+              .format(tool, exploit_type, test_suite_name, passed, job_cnt))
+
 def handle(signum, frame):
     proc_pool.terminate()
+    print_test_suite_result()
     print_results()
     exit(1)
 
@@ -185,16 +200,9 @@ try:
                 run_test_args += [(test, tool, exploit_type) for test in tests]
                 suites.append((tool, exploit_type, test_suite_name, len(tests)))
     i = 0
-    passed = 0
-    failed = 0
-    tl = 0
     current_id = 1
-    tool = None
-    exploit_type = None
-    test_suite_name = None
-    job_cnt = None
+    tool, exploit_type, test_suite_name, job_cnt = suites[0]
     for retcode, bstdout in proc_pool.imap(run_test, run_test_args):
-        tool, exploit_type, test_suite_name, job_cnt = suites[i]
         if current_id == 1 and not args.binary:
             print("=== Tool '{}' === Exp. type '{}' === Test suite '{}'"
                   .format(tool, exploit_type, test_suite_name))
@@ -209,20 +217,20 @@ try:
         elif retcode == 3:
             tl += 1
         if current_id == job_cnt:
-            results[exploit_type][tool][test_suite_name] = (passed, failed, tl, job_cnt)
-            if not args.binary:
-                print("--- Result --- {} {} {} : {} / {} (passed/all)"
-                      .format(tool, exploit_type, test_suite_name,
-                              passed, job_cnt))
+            print_test_suite_result()
             i += 1
+            if i == len(suites):
+                break
             passed = 0
             failed = 0
             tl = 0
             current_id = 1
+            tool, exploit_type, test_suite_name, job_cnt = suites[i]
         else:
             current_id += 1
 except KeyboardInterrupt:
     proc_pool.terminate()
     print("\n\nStopped by user")
+    print_test_suite_result()
 
 print_results()
