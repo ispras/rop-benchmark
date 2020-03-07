@@ -20,6 +20,12 @@ t = t["execve"]
 tools = [tool for tool in t.keys() if tool != "total"]
 binary_sets = t["total"].keys()
 
+tool_width = max(len(tool) for tool in tools)
+first_column_width = max(11, tool_width)
+
+def first_column(name):
+    return "| {}{} |".format(name, " " * (first_column_width - len(name)))
+
 headers = ["Tool"]
 for _ in binary_sets:
     headers += ["OK", "F", "TL"]
@@ -59,17 +65,17 @@ At least one OK""", end='')
     print(r""" \\
 \midrule""")
 else:
-    s = "| Test suite   |"
+    s = first_column("Test suite")
     for b in binary_sets:
         s += " " + b + " " * (18 - len(b)) + "|"
     print(s)
-    s = "| Total count  |"
+    s = first_column("Total count")
     for b in binary_sets:
         count = t["total"][b][-1]
         c = " {} ".format(count)
         s += c + " " * (19 - len(c)) +  "|"
     print(s)
-    s = "| Total OK     |"
+    s = first_column("Total OK")
     for b in binary_sets:
         ok = t["total"][b][0]
         c = " {} ".format(ok)
@@ -87,4 +93,9 @@ if args.latex:
 \end{tabular}
 \end{document}""")
 else:
+    if tool_width < first_column_width:
+        import re
+        p = " " * (first_column_width - tool_width)
+        s = re.sub(r"(\| [a-zA-Z]+ *) \|", r"\1{} |".format(p), s)
+        s = re.sub(":{}".format("-" * (tool_width + 1)), ":{}".format("-" * (first_column_width + 1)), s)
     print(s)
