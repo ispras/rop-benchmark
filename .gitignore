@@ -7,3 +7,7 @@ __pycache__/
 *.merg_o
 *.log
 *.ropium_raw_gadgets.*
+*.db
+*.addr
+*.aux
+results.out
