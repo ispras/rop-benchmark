@@ -248,4 +248,5 @@ Vishnyakov A.V., Nurmukhametov A.R. Survey of methods for automated code-reuse e
      pages   = {99--124},
      year    = {2019},
      doi     = {10.15514/ISPRAS-2019-31(6)-6},
+     url     = {https://ispras.ru/preprints/docs/prep_32_2019.pdf},
     }
