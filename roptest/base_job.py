@@ -67,6 +67,10 @@ class BaseJob:
         # Prepare input date for target test binary.
         self.write_input()
 
+        if self.generate_only:
+            self.info("GENERATED")
+            exit(0)
+
         # Perform 10 functionality tests.
         stable = True
         for _ in range(10):
@@ -96,6 +100,9 @@ class BaseJob:
         parser.add_argument("-c", "--check-only",
                             action='store_true', default=False,
                             help="Only check chain generated previously")
+        parser.add_argument("-g", "--generate-only",
+                            action="store_true", default=False,
+                            help="Only generate chains")
         return parser
 
     @staticmethod
@@ -127,6 +134,7 @@ class BaseJob:
         from os.path import isabs, relpath
         from os import getcwd
         self.check_only = args.check_only
+        self.generate_only = args.generate_only
         self.cwd = getcwd()
         if args.script_dir:
             self.script_dir = args.script_dir
@@ -147,6 +155,7 @@ class BaseJob:
         self.debug("script_dir: '{}'".format(self.script_dir))
         self.debug("timeout: '{}'".format(self.timeout))
         self.debug("check only {}".format(self.check_only))
+        self.debug("generate only {}".format(self.generate_only))
 
     def job_specific(self):
         """Do job specific action."""

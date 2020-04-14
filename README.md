@@ -34,10 +34,10 @@ Entry point to run benchmark is `run.sh` script.
     $ ./run.sh --help
 
 		usage: run.py [-h] [-s] [-t TOOL] [-r REAL_LIFE] [-n CORES] [-a ARCH] [-c]
-		              [-b BINARY] [--timeout TIMEOUT]
-
+		              [-g] [-b BINARY] [--timeout TIMEOUT] [--clean]
+		
 		Rop-benchmark entry point. By default it runs all tests.
-
+		
 		optional arguments:
 		  -h, --help            show this help message and exit
 		  -s, --synthetic       Run only synthetic test-suite
@@ -48,6 +48,8 @@ Entry point to run benchmark is `run.sh` script.
 		                        The number of parallel instances to run.
 		  -a ARCH, --arch ARCH  The target architecture of framework.
 		  -c, --check-only      Only check chains generated previously
+		  -g, --generate-only   Only generate chains. Do not try to run and check
+		                        them.
 		  -b BINARY, --binary BINARY
 		                        Run particular binary e.g. openbsd-62/ac.bin
 		  --timeout TIMEOUT     The timeout in seconds for each binary

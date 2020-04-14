@@ -58,6 +58,8 @@ def run_test(args):
         cmd += ["-t", str(timeout)]
     if CHECK_ONLY:
         cmd.append("-c")
+    if GENERATE_ONLY:
+        cmd.append("-g")
 
     def handle(signum, frame):
         kill_childs()
@@ -94,6 +96,9 @@ parser.add_argument("-a", "--arch", type=str, default="x86",
                     help="The target architecture of framework.")
 parser.add_argument("-c", "--check-only", action='store_true', default=False,
                     help="Only check chains generated previously")
+parser.add_argument("-g", "--generate-only", action="store_true",
+                    default=False, help=("Only generate chains. Do not try "
+                                         "to run and check them."))
 parser.add_argument("-b", "--binary", type=str,
                     help="Run particular binary e.g. openbsd-62/ac.bin")
 parser.add_argument("--timeout", type=int,
@@ -109,6 +114,7 @@ BENCHMARK_DIR = abspath(dirname(__file__))
 SYNTHETIC_VULN_DIR = join(BENCHMARK_DIR, "binaries", args.arch, "synthetic", "vuln")
 REALLIFE_VULN_DIR = join(BENCHMARK_DIR, "binaries", args.arch, "reallife", "vuln")
 CHECK_ONLY = args.check_only
+GENERATE_ONLY = args.generate_only
 
 environ["PYTHONPATH"] = BENCHMARK_DIR
 
