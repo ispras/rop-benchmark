@@ -22,6 +22,7 @@ with open(all_output_file, 'r') as f:
 # set -> instrument -> result
 ok_results = {}
 
+tools = set()
 tool_regexp = re.compile("=== Tool '(.*)' === Exp. type '(.*)' === Test suite '(.*)'.*")
 bin_regexp = re.compile(".*:rop-benchmark:(.*):(.*) - (.*) - (.*)")
 tool, test_suite = None, None
@@ -32,6 +33,7 @@ for line in lines:
         if test_suite not in ok_results:
             ok_results[test_suite] = {}
         if tool not in ok_results[test_suite]:
+            tools.add(tool)
             ok_results[test_suite][tool] = set()
         continue
 
@@ -59,4 +61,11 @@ if args.diff:
         diff = ok_all - ok_results[test_suite][diff_tool]
         print("Test suite {}".format(test_suite))
         print(diff)
+        diff_dict = {}
+        for el in diff:
+            diff_dict[el] = []
+            for tool in tools:
+                if el in ok_results[test_suite][tool]:
+                    diff_dict[el].append(tool)
+        print(diff_dict)
 
