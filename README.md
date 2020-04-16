@@ -89,6 +89,19 @@ To run only synthetic tests:
 
     $ ./run.sh -s
 
+In synthetic tests, a trick is used to get rid off extra gadgets emitted by C
+runtime. We want a tool to construct chains only from gadgets written in nasm
+source files. Two custom linker scripts were created to achieve this. Using
+them a linker creates two binaries `.gdt64` and `.vuln64` inside
+`binaries/x86/synthetic/vuln` directory. The first one is used only for a chain
+creation, whereas the second one is used only for checking generated chains.
+Both files contain two executable segments: one contains code from `vul.c`
+and C runtime, the another contains only sections with actual code of gadgets
+named `.gadgets.text`. The only difference between `.gdt64` and `.vuln64` files
+is the first segment flags. File `.gdt64` has only read permissions that have
+to restrict tools taking gadgets from them. So you should name section with
+gadgets in `nasm` files as `.gadgets.text`.
+
 ### Real life binaries test suite
 
 Real life binaries are placed in `binaries/x86/reallife/orig`. It contains several

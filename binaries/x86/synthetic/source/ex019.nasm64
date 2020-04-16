@@ -1,0 +1,43 @@
+;move chain to store args
+
+bits 64
+
+SECTION .gadgets.text
+
+gadgets:
+
+.MoveRegG1:
+MOV RBP, RAX
+RET
+
+.MoveRegG2:
+MOV RBX, RAX
+RET
+
+.LoadConstG1:
+POP RDX:
+RET
+
+.LoadConstG2:
+POP RAX
+RET
+
+.LoadConstG3:
+POP RSI
+RET
+
+.LoadConstG4:
+POP RDI
+RET
+
+.StoreMemG:
+MOV QWORD [RBP], RBX
+RET
+
+; rax (rdi, rsi, rdx)
+.SyscallG:
+SYSCALL
+
+.NoOP:
+RET
+RET

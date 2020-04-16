@@ -1,0 +1,35 @@
+;move chain to syscall args
+
+bits 64
+
+SECTION .gadgets.text
+
+gadgets:
+
+.MoveRegG1:
+MOV RDX, RAX
+RET
+
+.LoadConstG2:
+POP RAX
+RET
+
+.LoadConstG3:
+POP RSI
+RET
+
+.LoadConstG4:
+POP RDI
+RET
+
+.StoreMemG:
+MOV QWORD [RSI], RDI
+RET
+
+; rax (rdi, rsi, rdx)
+.SyscallG:
+SYSCALL
+
+.NoOP:
+RET
+RET

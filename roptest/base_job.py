@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 from argparse import ArgumentParser
-from os.path import dirname, realpath, exists
+from os.path import dirname, realpath, exists, splitext
 from sys import exit
 from subprocess import Popen, PIPE, STDOUT
 
@@ -58,7 +58,11 @@ class BaseJob:
             self.job_specific()
 
             # Actual run of tool.
+            vuln_binary = self.binary
+            if "synthetic" in self.binary:
+                self.binary = f"{splitext(self.binary)[0]}.gdt64"
             self.run_rop_tool()
+            self.binary = vuln_binary
 
         if not exists(self.ropchain):
             self.failure("ERROR (not generated)")

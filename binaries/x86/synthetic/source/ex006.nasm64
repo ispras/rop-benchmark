@@ -2,15 +2,11 @@
 
 bits 64
 
-SECTION .data
-
-  buffer: resb 20000
-
-SECTION .text
+SECTION .gadgets.text
 
 gadgets:
 
-.LoadConstG1
+.LoadConstG1:
 POP BX
 RET
 
@@ -18,19 +14,19 @@ RET
 MOV WORD [RAX], BX
 RET
 
-.LoadConstGa1
+.LoadConstGa1:
 POP RDI
 RET
 
-.LoadConstGa2
+.LoadConstGa2:
 POP RSI
 RET
 
-.LoadConstGa3
+.LoadConstGa3:
 POP RDX
 RET
 
-.LoadConstGn
+.LoadConstGn:
 POP RAX
 RET
 

@@ -1,0 +1,71 @@
+bits 64
+
+SECTION .gadgets.text
+
+gadgets:
+
+.NoOpG1:
+RET 
+
+.NoOpG2:
+RET 8
+
+.LoadConstG1:
+POP RAX
+RET
+
+.LoadConstG2:
+POP RBX
+RET
+
+.LoadConstG3:
+POP RCX
+RET 8
+
+.LoadConstG4:
+POP RDX
+RET
+
+.LoadConstG5:
+POP RBP
+RET
+
+.LoadConstG6:
+POP RDI
+RET
+
+.InitConstESI:
+CMP RCX, RDX
+SBB ESI, ESI
+CMP RCX, RDX
+CMOVBE EAX, ESI
+RET
+
+.LoadConstG7:
+POP RSI
+RET 4
+
+.LoadConstG8:
+POP RDX
+RET
+
+.StoreMemG1:
+MOV [RAX], RBX
+RET
+
+.InitConstG1:
+XOR RBX, RBX
+RET
+
+.InitConstG2:
+XOR RAX, RAX
+RET
+
+.ArithmeticG1:
+INC EAX
+RET
+
+; rax (rdi, rsi, rdx)
+.SyscallG:
+SYSCALL
+

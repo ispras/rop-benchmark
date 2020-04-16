@@ -1,12 +1,8 @@
-;set reg with small store
+;bad LoadConst multiple with overlapping
 
 bits 64
 
-SECTION .data
-
-  buffer: resb 20000
-
-SECTION .text
+SECTION .gadgets.text
 
 gadgets:
 
@@ -18,6 +14,25 @@ POP RDX
 MOV RBP, RDX
 RET
 
-.NoOP:
+.LoadConstG2:
+POP RDI
+POP RSI
+POP RDX
+POP RAX
+RET
+
+.StoreMemG1:
+MOV QWORD [RAX], RBX
+RET
+
+.StoreMemG2:
+MOV WORD [RDI], SI
+RET
+
+; rax (rdi, rsi, rdx)
+.SyscallG:
+SYSCALL
+
+.NoOp:
 RET
 RET
