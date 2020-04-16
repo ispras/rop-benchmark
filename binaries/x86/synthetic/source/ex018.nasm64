@@ -1,0 +1,34 @@
+; same as ex002 but ret N
+bits 64
+
+SECTION .gadgets.text
+
+gadgets:
+
+.LoadConstG6:
+POP RDI
+RET
+
+.LoadConstG7:
+POP RSI
+RET 4
+
+.LoadConstG8:
+POP RDX
+RET
+
+.LoadConstG9:
+POP RAX
+RET
+
+.StoreMemG1:
+MOV QWORD [RDX], RSI
+RET
+
+; rax (rdi, rsi, rdx)
+.SyscallG:
+SYSCALL
+
+.NoOP:
+RET
+RET

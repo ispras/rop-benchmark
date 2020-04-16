@@ -2,11 +2,7 @@
 
 bits 64
 
-SECTION .data
-
-  buffer: resb 20000
-
-SECTION .text
+SECTION .gadgets.text
 
 gadgets:
 
@@ -23,7 +19,7 @@ POP RBX
 RET
 
 .StoreMemG:
-MOV DWORD [RBX + 0FFFFFFFFFFFF000h], RSI
+MOV QWORD [RBX + 0FFFFFFFFFFFF000h], RSI
 RET
 
 ; rax (rdi, rsi, rdx)

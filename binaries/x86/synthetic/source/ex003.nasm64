@@ -1,32 +1,28 @@
-;simple move chain test
+;move chain test
 
 bits 64
 
-SECTION .data
-
-  buffer: resb 20000
-
-SECTION .text
+SECTION .gadgets.text
 
 gadgets:
 
-.MoveRegG1
+.MoveRegG1:
 MOV RDI, RBP
 RET
 
-.MoveRegG2
+.MoveRegG2:
 MOV RSI, RBP
 RET
 
-.MoveRegG3
+.MoveRegG3:
 MOV RAX, RBP
 RET
 
-.LoadConstG1
-POP RDX
+.LoadConstG1:
+POP RDX:
 RET
 
-.LoadConstG2
+.LoadConstG2:
 POP RBP
 RET
 

@@ -2,11 +2,7 @@
 
 bits 64
 
-SECTION .data
-
-  buffer: resb 20000
-
-SECTION .text
+SECTION .gadgets.text
 
 gadgets:
 

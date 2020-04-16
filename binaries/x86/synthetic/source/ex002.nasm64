@@ -1,26 +1,23 @@
+; minimal gadget set
 bits 64
 
-SECTION .data
-
-  buffer: resb 20000
-
-SECTION .text
+SECTION .gadgets.text
 
 gadgets:
 
-.LoadConstG6
+.LoadConstG6:
 POP RDI
 RET
 
-.LoadConstG7
+.LoadConstG7:
 POP RSI
-RET 4
+RET
 
-.LoadConstG8
+.LoadConstG8:
 POP RDX
 RET
 
-.LoadConstG9
+.LoadConstG9:
 POP RAX
 RET
 

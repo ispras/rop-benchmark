@@ -46,3 +46,4 @@ class LinuxJob(BaseJob):
             addr = symbol.entry['st_value']
             self.debug("{} addr: {}".format(function_name, hex(addr)))
             return addr
+
