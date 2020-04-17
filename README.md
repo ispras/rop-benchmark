@@ -132,11 +132,11 @@ support.
 
 2. [Ropper](https://github.com/sashs/ropper)
 
-3. [ropium](https://github.com/Boyan-MILANOV/ropium)
+3. [ROPium](https://github.com/Boyan-MILANOV/ropium)
 
 4. [angrop](https://github.com/salls/angrop)
 
-5. [exrop](https://github.com/d4em0n/exrop)
+5. [Exrop](https://github.com/d4em0n/exrop)
 
 To run all tests only with e.g. ropper
 
