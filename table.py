@@ -8,6 +8,8 @@ from tabulate import tabulate
 parser = argparse.ArgumentParser(description="Print results table")
 parser.add_argument("results", type=str, help="Benchmark results file")
 parser.add_argument("--latex", action="store_true", help="Print LaTeX table")
+parser.add_argument("--tools", type=str, help="List of tools to print (comma-separated)")
+parser.add_argument("--suites", type=str, help="List of test suites to print (comma-separated)")
 args = parser.parse_args()
 
 highlight_row = ">{\columncolor[gray]{0.9}}"
@@ -17,8 +19,35 @@ with open(args.results, "r") as f:
     t = ast.literal_eval(f.readlines()[-1])
 
 t = t["execve"]
-tools = [tool for tool in t.keys() if tool != "total"]
-binary_sets = t["total"].keys()
+if args.suites:
+    binary_sets = args.suites.split(",")
+else:
+    binary_sets = t["total"].keys()
+if args.tools:
+    tools = args.tools.split(",")
+    # Recalculate Total OK
+    import re
+    r = re.compile("Tool '([^\s]+)'.*Test suite '([^\s]+)'")
+    oks = {b: set() for b in binary_sets}
+    b = None
+    with open(args.results, "r") as f:
+        for line in f:
+            m = r.search(line)
+            if m:
+                tool = m.group(1)
+                if tool not in tools:
+                    b = None
+                    continue
+                b = m.group(2)
+                if b not in binary_sets:
+                    b = None
+                continue
+            if b and line.startswith(" ") and "OK" in line:
+                oks[b].add(line.split(" - ", 1)[0].rsplit(":", 1)[-1])
+    for b in binary_sets:
+        t["total"][b] = (len(oks[b]), t["total"][b][1])
+else:
+    tools = [tool for tool in t.keys() if tool != "total"]
 
 tool_width = max(len(tool) for tool in tools)
 first_column_width = max(11, tool_width)
