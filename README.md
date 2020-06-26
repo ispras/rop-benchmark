@@ -173,7 +173,9 @@ Note: Ropper almost always generates a ROP chain script file, so `FAIL HIJACK`s 
 
 ## MAJORCA
 
-Multi-Architecture JOP and ROP Chain Assembler [master thesis](https://vishnya.xyz/vishnyakov-master-thesis2020.pdf) results.
+Multi-Architecture JOP and ROP Chain Assembler
+[master thesis](https://vishnya.xyz/vishnyakov-master-thesis2020.pdf) results
+\[[slides](https://vishnya.xyz/vishnyakov-master-thesis2020-presentation.pdf)\].
 
 ![MAJORCA results](majorca.svg)
 
