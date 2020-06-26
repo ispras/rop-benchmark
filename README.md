@@ -171,6 +171,12 @@ At least one OK means at least one tool produced OK.
 Note: Ropper almost always generates a ROP chain script file, so `FAIL HIJACK`s were not evaluated.
 [results.pdf](results.pdf) contains a hyperlink for each tool repository with a specific commit hash.
 
+## MAJORCA
+
+Multi-Architecture JOP and ROP Chain Assembler [master thesis](https://vishnya.xyz/vishnyakov-master-thesis2020.pdf) results.
+
+![MAJORCA results](majorca.svg)
+
 # Auxiliary scripts
 
 ## table.py

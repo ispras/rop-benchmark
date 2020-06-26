@@ -1,0 +1,30 @@
+\documentclass[]{standalone}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage[hidelinks]{hyperref}
+\begin{document}
+\begin{tabular}{ l | >{\columncolor[gray]{0.9}}r r r | >{\columncolor[gray]{0.9}}r r r | >{\columncolor[gray]{0.9}}r r r | >{\columncolor[gray]{0.9}}r r r | >{\columncolor[gray]{0.9}}r r r }
+\toprule
+Test suite & \multicolumn{3}{c |}{Synthetic} & \multicolumn{3}{c |}{OpenBSD 6.4}
+           & \multicolumn{3}{c |}{OpenBSD 6.2} & \multicolumn{3}{c |}{Debian 10}
+           & \multicolumn{3}{c}{CentOS 7} \\
+Number of files & \multicolumn{3}{c |}{22} & \multicolumn{3}{c |}{410} & \multicolumn{3}{c |}{397} & \multicolumn{3}{c |}{689} & \multicolumn{3}{c}{649} \\
+Has syscall gadget & \multicolumn{3}{c |}{21} & \multicolumn{3}{c |}{98} & \multicolumn{3}{c |}{87} & \multicolumn{3}{c |}{139} & \multicolumn{3}{c}{121} \\
+At least one OK & \multicolumn{3}{c |}{20} & \multicolumn{3}{c |}{45} & \multicolumn{3}{c |}{67} & \multicolumn{3}{c |}{127} & \multicolumn{3}{c}{92} \\
+\midrule
+ Tool         &   OK &   F &   TL &   OK &   F &   TL &   OK &   F &   TL &   OK &   F &   TL &   OK &   F &   TL \\
+ \href{https://github.com/JonathanSalwan/ROPgadget/tree/c29c50773ec7fb3df56396ce27fb71c3898c53ae}{ROPgadget}
+              &    1 &   0 &    0 &    2 &   0 &    0 &    4 &   0 &    0 &    7 &   0 &    0 &    8 &   0 &    0 \\
+ \href{https://github.com/sashs/Ropper/tree/75a9504683427e373c7bb6d6a54ed20bd98905ff}{Ropper}
+              &    2 &  -- &    0 &    3 &  -- &    0 &   15 &  -- &    0 &   53 &  -- &    0 &   31 &  -- &    0 \\
+ \href{https://github.com/d4em0n/exrop/tree/343eee05bd4b9d31db3e55a70a33893527225c84}{Exrop}
+              &    9 &   0 &    0 &    0 &  33 &   28 &   11 &  27 &   13 &   76 &  19 &    5 &   48 &   8 &   12 \\
+ \href{https://github.com/salls/angrop/tree/794583f59282f45505a734b21b30b982fceee68b}{angrop}
+              &    8 &   1 &    0 &   10 &   1 &    2 &   25 &   2 &    3 &   86 &  12 &    1 &   54 &   9 &    0 \\
+ \href{https://github.com/Boyan-MILANOV/ropium/tree/e7100878b75e55d775eecfd79bd549f9895f4c8c}{ROPium}
+              &   10 &   1 &    0 &   18 &   4 &    0 &   43 &   6 &    1 &  103 &  10 &    0 &   64 &  11 &    0 \\
+ majorca      &   18 &   1 &    0 &   43 &   1 &    1 &   66 &   0 &    1 &  124 &   1 &    0 &   90 &   1 &    0 \\
+\bottomrule
+\end{tabular}
+\end{document}
