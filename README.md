@@ -166,6 +166,8 @@ Each tool was run single-threaded with 1 hour time limit.
 
 ![ROP Benchmark results](results.svg)
 
+At least one OK means at least one tool produced OK.
+
 Note: Ropper almost always generates a ROP chain script file, so `FAIL HIJACK`s were not evaluated.
 [results.pdf](results.pdf) contains a hyperlink for each tool repository with a specific commit hash.
 
