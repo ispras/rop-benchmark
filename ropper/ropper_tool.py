@@ -4,16 +4,18 @@ from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
 
 class Ropper:
 
-    def __init__(self, binary, input, job, ropchain):
+    def __init__(self, binary, input, job, ropchain, bad_chars):
         self.binary = binary
         self.input = input
         self.job = job
         self.logger = job.logger
         self.ropchain = ropchain
+        self.bad_chars = bad_chars
 
     def run(self, timeout):
-        cmd = ["ropper", "--single", "--nocolor", "--file", self.binary,
-               "--chain", "execve"]
+        cmd = ["ropper", "--single", "--nocolor", "--file", self.binary, "--chain", "execve"]
+        if self.bad_chars:
+            cmd += ["--badbytes", self.bad_chars]
         self.logger.debug("Run ropper: {}".format(" ".join(cmd)))
         process = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
 
@@ -32,14 +34,16 @@ class Ropper:
 
         lines = stdout.splitlines()
         n = len(lines)
-        ropchain_generator = []
+        ropchain_generator = [b"from __future__ import print_function"]
         for i, line in enumerate(lines):
             if line == b"from struct import pack":
                 n = i
             if i >= n:
-                ropchain_generator.append(line)
                 if line == b"print rop":
+                    ropchain_generator.append(b"print(rop, end='')")
                     break
+                else:
+                    ropchain_generator.append(line)
 
         script_path = "{}.ropper.script".format(self.binary)
         with open(script_path, 'wb') as script:
@@ -60,4 +64,3 @@ class Ropper:
             if script_p.returncode != 0:
                 self.logger.error("Compilation ERROR with {} (ropper script)".format(script_p.returncode))
                 exit(1)
-

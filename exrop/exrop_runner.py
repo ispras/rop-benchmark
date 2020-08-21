@@ -6,6 +6,8 @@ import sys
 
 binary = sys.argv[1]
 ropchain_path = sys.argv[2]
+if len(sys.argv) == 4:
+    bad_chars = sys.argv[3]
 
 elf = ELF(binary)
 rwaddr = elf.bss()

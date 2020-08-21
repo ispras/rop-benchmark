@@ -5,6 +5,7 @@ from argparse import ArgumentParser
 from sys import exit
 from multiprocessing import Pool, cpu_count
 import signal
+import binascii
 
 
 global timeout
@@ -52,8 +53,10 @@ def run_test(args):
     """
     from subprocess import Popen, PIPE, STDOUT
 
-    testname, tool, exploit_type = args
+    testname, tool, exploit_type, bad_chars = args
     cmd = ["/usr/bin/python3", "{}/job_{}.py".format(tool, exploit_type), testname]
+    if bad_chars:
+        cmd += ["-d", bad_chars]
     if timeout is not None:
         cmd += ["-t", str(timeout)]
     if CHECK_ONLY:
@@ -106,6 +109,9 @@ parser.add_argument("--timeout", type=int,
 parser.add_argument("--clean", action="store_true", default=False,
                     help=("Clean rop-benchmark working tree "
                           "from any artifacts of previous runs"))
+parser.add_argument("-d", "--badchars", type=str,
+                    help="Bytes banned for use as part of chain, "
+                         "format: '00aa680f' ( -> 0x00, 0xaa, 0x68, 0x0f )")
 args = parser.parse_args()
 
 timeout = args.timeout
@@ -129,6 +135,11 @@ if not args.tool:
     tools = ["ropgadget", "angrop", "ropium", "ropper", "exrop"]
 else:
     tools = [args.tool]
+
+if args.badchars:
+    bad_chars = args.badchars
+else:
+    bad_chars = ""
 
 test_suites = {}
 if args.binary:
@@ -170,6 +181,8 @@ def print_results():
 
 n_core = args.cores if args.cores is not None else cpu_count()
 print("---- Run rop-benchmark in {} parallel jobs ----".format(n_core))
+if args.badchars:
+    print("=== Badchars '{}'".format(args.badchars))
 proc_pool = Pool(n_core)
 
 passed = 0
@@ -203,7 +216,7 @@ try:
                     tests = [join(test_suite_dir, basename(args.binary))]
                 else:
                     tests = list_tests(test_suite_dir)
-                run_test_args += [(test, tool, exploit_type) for test in tests]
+                run_test_args += [(test, tool, exploit_type, bad_chars) for test in tests]
                 suites.append((tool, exploit_type, test_suite_name, len(tests)))
     i = 0
     current_id = 1

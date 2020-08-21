@@ -4,7 +4,7 @@ from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
 
 class Ropium:
 
-    def __init__(self, binary, input, job, ropchain, rwaddr):
+    def __init__(self, binary, input, job, ropchain, rwaddr, bad_chars):
         self.rwaddr = hex(rwaddr)
         self.binary = binary
         self.script = "{}.ropium.script".format(self.binary)
@@ -12,13 +12,15 @@ class Ropium:
         self.job = job
         self.logger = job.logger
         self.ropchain = ropchain
+        self.bad_chars = bad_chars
 
     def run(self, timeout):
         from os.path import abspath, dirname, join
 
         runner = abspath(join(dirname(__file__), "ropium_runner.py"))
-        cmd = ["/usr/bin/python3", runner, self.binary, self.ropchain,
-               self.script, self.rwaddr]
+        cmd = ["/usr/bin/python3", runner, self.binary, self.ropchain, self.script, self.rwaddr]
+        if self.bad_chars:
+            cmd += [self.bad_chars]
         self.logger.debug("Run ropium: {}".format(" ".join(cmd)))
         self.logger.debug("ropium rwaddr: {}".format(self.rwaddr))
         process = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT)

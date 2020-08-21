@@ -15,7 +15,7 @@ class RopchainJob(job_class):
         self.rop_tool = "exrop"
 
     def run_rop_tool(self):
-        rop_tool = Exrop(self.binary, self.input, self, self.ropchain)
+        rop_tool = Exrop(self.binary, self.input, self, self.ropchain, self.bad_chars)
         rop_tool.run(self.timeout)
 
 

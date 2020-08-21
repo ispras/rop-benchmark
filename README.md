@@ -52,6 +52,8 @@ Entry point to run benchmark is `run.sh` script.
 		                        them.
 		  -b BINARY, --binary BINARY
 		                        Run particular binary e.g. openbsd-62/ac.bin
+		  -d BADCHARS, --badchars BADCHARS
+					Bytes banned for use as part of chain
 		  --timeout TIMEOUT     The timeout in seconds for each binary
 		  --clean               Clean rop-benchmark working tree from any artifacts of
 		                        previous runs

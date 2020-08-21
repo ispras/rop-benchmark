@@ -11,8 +11,8 @@ class WindowsJob(BaseJob):
     def __init__(self):
         super().__init__()
         # TODO! when supporting windows define `self.vuln_trigger_data` to trigger vulnerability.
-        self.vuln_trigger_data[32] = 'a' * 5
-        self.vuln_trigger_data[64] = 'A' * 40
+        self.vuln_trigger_data_size[32] = 5
+        self.vuln_trigger_data_size[64] = 40
 
     @staticmethod
     def determine_arch(binary):

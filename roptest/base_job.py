@@ -10,7 +10,8 @@ class BaseJob:
 
     def __init__(self):
         self.script_file = None
-        self.vuln_trigger_data = {}
+        self.vuln_trigger_data = None
+        self.vuln_trigger_data_size = {}
         self.rop_tool = None
         self.script_dir = None
         self.cwd = None
@@ -27,10 +28,12 @@ class BaseJob:
         self.error = None
         self.failure = None
         self.parser = self.create_parser()
+        self.bad_chars = ''
+        self.fill = 'a'
 
     @staticmethod
     def determine_arch(binary):
-        """Return arch depending from binary architecture, used as key into `vuln_trigger_data`."""
+        """Return arch depending from binary architecture, used as key into `vuln_trigger_data_size`."""
         # Note: it should be implemented in LinuxJob and WindowsJob
         return NotImplemented
 
@@ -67,6 +70,15 @@ class BaseJob:
         if not exists(self.ropchain):
             self.failure("ERROR (not generated)")
             exit(1)
+
+        if self.bad_chars:
+            import binascii
+            with open(self.ropchain, 'rb') as ropchain_data:
+                payload = ropchain_data.read()
+            for char in binascii.unhexlify(self.bad_chars):
+                if char in payload:
+                    self.failure("ERROR (payload contains badchars)")
+                    exit(1)
 
         # Prepare input date for target test binary.
         self.write_input()
@@ -107,6 +119,8 @@ class BaseJob:
         parser.add_argument("-g", "--generate-only",
                             action="store_true", default=False,
                             help="Only generate chains")
+        parser.add_argument("-d", "--badchars", type=str,
+                            help="Bytes banned for use as part of chain")
         return parser
 
     @staticmethod
@@ -150,6 +164,19 @@ class BaseJob:
         self.arch = self.determine_arch(self.binary)
         self.input = "{}.{}.input".format(self.binary, self.rop_tool)
         self.ropchain = "{}.{}.ropchain".format(self.binary, self.rop_tool)
+        if args.badchars:
+            self.bad_chars = args.badchars
+            import binascii
+            if self.fill.encode('ascii') in binascii.unhexlify(self.bad_chars):
+                self.fill = None
+                for i in range(256):
+                    if bytes([i]) not in binascii.unhexlify(self.bad_chars):
+                        self.fill = bytes([i]).decode('ascii')
+                        break
+                if self.fill is None:
+                    raise ValueError("No suitable fill character is available")
+        self.vuln_trigger_data = self.vuln_trigger_data_size[self.arch] * self.fill
+
 
     def print_parameters(self):
         self.debug("Run with parameters:")
@@ -174,7 +201,7 @@ class BaseJob:
     def write_input(self, extra_buf=None):
         """Create input file for test binary."""
         with open(self.input, 'wb') as input_data:
-            input_data.write(self.vuln_trigger_data[self.arch].encode('ascii'))
+            input_data.write(self.vuln_trigger_data.encode('ascii'))
             with open(self.ropchain, 'rb') as ropchain_data:
                 input_data.write(ropchain_data.read())
                 if extra_buf is not None:

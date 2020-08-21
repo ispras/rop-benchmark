@@ -15,7 +15,7 @@ class RopchainJob(job_class):
         self.rop_tool = "ropgadget"
 
     def run_rop_tool(self):
-        rop_tool = ROPGadget(self.binary, self.input, self, self.ropchain)
+        rop_tool = ROPGadget(self.binary, self.input, self, self.ropchain, self.bad_chars)
         rop_tool.run(self.timeout)
 
 

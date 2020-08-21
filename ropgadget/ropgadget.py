@@ -4,12 +4,13 @@ from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
 
 class ROPGadget:
 
-    def __init__(self, binary, input, job, ropchain):
+    def __init__(self, binary, input, job, ropchain, bad_chars):
         self.binary = binary
         self.input = input
         self.job = job
         self.logger = job.logger
         self.ropchain = ropchain
+        self.bad_chars = bad_chars
 
     def run(self, timeout):
         from os import environ
@@ -17,6 +18,10 @@ class ROPGadget:
         pp = environ["PYTHONPATH"]
         del environ["PYTHONPATH"]
         cmd = ["ROPgadget", "--binary", self.binary, "--ropchain"]
+        if self.bad_chars:
+            import binascii
+            bad_chars = "|".join("{:02x}".format(char) for char in binascii.unhexlify(self.bad_chars))
+            cmd += ["--badbytes", bad_chars]
         self.logger.debug("RUN {}".format(" ".join(cmd)))
         process = Popen(cmd, env=environ, stderr=STDOUT, stdout=PIPE)
 

@@ -4,17 +4,20 @@ from subprocess import Popen, PIPE, STDOUT, TimeoutExpired
 
 class Angrop:
 
-    def __init__(self, binary, input, job, ropchain):
+    def __init__(self, binary, input, job, ropchain, bad_chars):
         self.binary = binary
         self.input = input
         self.job = job
         self.logger = job.logger
         self.ropchain = ropchain
+        self.bad_chars = bad_chars
 
     def run(self, timeout):
         from os.path import abspath, dirname, join
         runner = abspath(join(dirname(__file__), "angrop_runner.py"))
         cmd = ["/usr/bin/python3", runner, self.binary, self.ropchain]
+        if self.bad_chars:
+            cmd += [self.bad_chars]
         self.logger.debug("RUN angrop runner {}".format(" ".join(cmd)))
         process = Popen(cmd, stderr=STDOUT, stdout=PIPE)
 

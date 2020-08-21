@@ -12,9 +12,9 @@ class LinuxJob(BaseJob):
 
     def __init__(self):
         super().__init__()
-        self.vuln_trigger_data['EM_386'] = 'a' * 25
-        self.vuln_trigger_data['EM_X86_64'] = 'a' * 29
-        self.vuln_trigger_data['EM_MIPS'] = 'a' * 8
+        self.vuln_trigger_data_size['EM_386'] = 25
+        self.vuln_trigger_data_size['EM_X86_64'] = 29
+        self.vuln_trigger_data_size['EM_MIPS'] = 8
 
     @staticmethod
     def determine_arch(binary):
