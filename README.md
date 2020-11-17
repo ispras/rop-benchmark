@@ -4,7 +4,7 @@ This repository contains tests for benchmarking ROP compilers. ROP Benchmark is
 intended to compare ROP compilers. ROP Benchmark was used to evaluate
 existing open source tools in "Survey of Methods for Automated Code-Reuse
 Exploit Generation" paper 
-\[[eglish](https://arxiv.org/abs/2011.07862)\]
+\[[english](https://arxiv.org/abs/2011.07862)\]
 \[[russian](https://www.ispras.ru/preprints/docs/prep_32_2019.pdf)\].
 
 # Installation
