@@ -266,16 +266,15 @@ workability of exploits like docker container on Linux.
 
 # Cite us
 
-Vishnyakov A.V., Nurmukhametov A.R. Survey of methods for automated code-reuse exploit generation. Proceedings of the Institute for System Programming, vol. 31, issue 6, 2019, pp. 99-124 DOI: 10.15514/ISPRAS-2019-31(6)-6.
+Vishnyakov, A.V. and Nurmukhametov, A.R., 2021. Survey of Methods for Automated Code-Reuse Exploit Generation. Programming and Computer Software 47(4), pp. 271-297. DOI: [10.1134/S0361768821040071](https://doi.org/10.1134/S0361768821040071)
 
-    @article{vishnyakov19,
-     title   = {Survey of methods for automated code-reuse exploit generation},
-     author  = {Vishnyakov, A.~V. and Nurmukhametov, A.~R.},
-     journal = {Proceedings of the Institute for System Programming of the RAS},
-     volume  = {31},
-     number  = {6},
-     pages   = {99--124},
-     year    = {2019},
-     doi     = {10.15514/ISPRAS-2019-31(6)-6},
-     url     = {https://ispras.ru/preprints/docs/prep_32_2019.pdf},
+    @article{vishnyakov21,
+      title = {Survey of Methods for Automated Code-Reuse Exploit Generation},
+      author = {Vishnyakov, A.~V. and Nurmukhametov, A.~R.},
+      journal = {Programming and Computer Software},
+      volume = {47},
+      number = {4},
+      pages = {271--297},
+      year = {2021},
+      doi = {10.1134/S0361768821040071},
     }
