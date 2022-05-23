@@ -177,9 +177,9 @@ Note: Ropper almost always generates a ROP chain script file, so `FAIL HIJACK`s 
 
 ## MAJORCA
 
-Multi-Architecture JOP and ROP Chain Assembler
-[master thesis](https://vishnya.xyz/vishnyakov-master-thesis2020.pdf) results
-\[[slides](https://vishnya.xyz/vishnyakov-master-thesis2020-presentation.pdf)\].
+MAJORCA: Multi-Architecture JOP and ROP Chain Assembler
+[paper](https://arxiv.org/abs/2111.05781) results
+\[[slides](https://www.nurmukhametov.com/majorca_presentation.pdf)\].
 
 ![MAJORCA results](majorca.svg)
 
@@ -277,4 +277,17 @@ Vishnyakov, A.V. and Nurmukhametov, A.R., 2021. Survey of Methods for Automated 
       pages = {271--297},
       year = {2021},
       doi = {10.1134/S0361768821040071},
+    }
+
+Nurmukhametov, A., Vishnyakov, A., Logunova V., Kurmangaleev Sh. MAJORCA: Multi-Architecture JOP and ROP Chain Assembler. 2021 Ivannikov ISPRAS Open Conference (ISPRAS), IEEE, 2021, pp. 37-46. DOI: [10.1109/ISPRAS53967.2021.00011](https://doi.org/10.1109/ISPRAS53967.2021.00011)
+
+    @inproceedings{nurmukhametov21,
+      title = {{{MAJORCA}}: Multi-Architecture JOP and ROP Chain Assembler},
+      author = {Nurmukhametov, Alexey and Vishnyakov, Alexey and Logunova, Vlada and
+                Kurmangaleev, Shamil},
+      booktitle = {2021 Ivannikov ISPRAS Open Conference (ISPRAS)},
+      pages = {37--46},
+      year = {2021},
+      publisher = {IEEE},
+      doi = {10.1109/ISPRAS53967.2021.00011},
     }
